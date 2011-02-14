@@ -1,0 +1,31 @@
+[blacklist]
+http://de.wikipedia.org/wiki
+http://de.wikipedia.org/
+http://en.wikipedia.org/wiki/Main_Page
+http://de.wikipedia.org/wiki/Wikipedia:Hauptseite
+http://meta.wikimedia.org/wiki/List_of_Wikipedias
+.wikipedia. /index.php
+/wiki/Spezial:
+/wiki/Special:
+/wiki/Kategorie:
+/wiki/Wikipedia:
+/wiki/Portal:
+/wiki/Mailto:
+/wiki/Category:
+regexp:http://en.wikipedia.org/wiki/[0-9]+?.+
+http://de.wikipedia.org/wiki/
+
+[queries]
++ div id="bodyContent"
++ h1 id="firstHeading" class="firstHeading"
+- style
+- div id="catlinks" class="catlinks"
+- div id="catlinks"
+- div class="catlinks"
+- div id="siteSub"
+- div id="jump-to-nav"
+- table class=""infobox"
+- sup class="reference"
+- script
+- span class="editsection"
+

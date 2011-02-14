@@ -1,0 +1,157 @@
+package de.visone.crawl.xml;
+
+import java.io.IOException;
+
+import org.xml.sax.SAXException;
+
+import de.visone.crawl.Settings;
+import de.visone.crawl.gui.CrawlerDialog;
+import de.visone.crawl.out.CrawlListener;
+import de.visone.crawl.sys.CrawlState;
+import de.visone.crawl.sys.UrlPool;
+import de.visone.crawl.sys.Utils;
+
+public class CrawlerThread extends Thread implements ProgressProducer {
+
+	private final String userAgent;
+
+	private final UrlPool pool;
+
+	private final int maxDepth;
+
+	private final CrawlListener listener;
+
+	private final boolean haltOnError;
+
+	private final int coolDown;
+
+	private ProgressListener progress;
+
+	private volatile int level;
+
+	private volatile boolean hasFinished;
+
+	private Exception errorFlag;
+
+	private String lastURL;
+
+	private volatile boolean fresh = true;
+
+	public CrawlerThread(final UrlPool pool, final Settings s,
+			final CrawlListener listener) {
+		super("Crawl-Thread");
+		this.pool = pool;
+		maxDepth = s.maxDepth;
+		userAgent = s.userAgent;
+		this.listener = listener;
+		progress = null;
+		hasFinished = false;
+		haltOnError = s.haltOnError;
+		coolDown = s.coolDown;
+		errorFlag = null;
+		lastURL = null;
+	}
+
+	private void finish() {
+		final ProgressListener p = progress;
+		progress = null;
+		p.finished(lastURL, haltOnError ? errorFlag : null);
+	}
+
+	@Override
+	public void setProgressListener(final ProgressListener p) {
+		progress = p;
+		if (progress != null) {
+			if (hasFinished) {
+				finish();
+			} else {
+				progress.progressAdvanced(getProgressLevel(), getProgress());
+			}
+		}
+	}
+
+	private void crawl(final CrawlState state) throws IOException, SAXException {
+		level = state.getDepth();
+		lastURL = state.getURL().toString();
+		if (progress != null) {
+			progress.progressAdvanced(getProgressLevel(), getProgress());
+		}
+		Utils.crawl(state, pool, userAgent);
+	}
+
+	@Override
+	public void run() {
+		fresh = false;
+		try {
+			while (!isInterrupted() && pool.hasNext()) {
+				final CrawlState state = pool.getNext();
+				if (state != null) {
+					try {
+						crawl(state);
+						listener.pageCrawled(state.getTexter());
+						state.dispose();
+					} catch (final Exception e) {
+						errorFlag = e;
+						if (!haltOnError) {
+							e.printStackTrace();
+							if (coolDown > 0) {
+								synchronized (this) {
+									System.err.println("cooling down "
+											+ coolDown + "ms");
+									wait(coolDown);
+								}
+							}
+						}
+					}
+				}
+				if (haltOnError && errorFlag != null) {
+					break;
+				}
+			}
+		} catch (final InterruptedException e) {
+			interrupt();
+		}
+		try {
+			listener.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		hasFinished = true;
+		if (progress != null) {
+			finish();
+		} else if (haltOnError && errorFlag != null && !isInterrupted()) {
+			CrawlerDialog.printErrorDialog(lastURL, errorFlag, null);
+		}
+	}
+
+	public void cancelAction() {
+		if (progress != null) {
+			progress = null;
+			interrupt();
+		}
+	}
+
+	public double getProgressLevel() {
+		return (double) level / (double) maxDepth;
+	}
+
+	public double getProgress() {
+		return pool.getProgress(level);
+	}
+
+	@Override
+	public boolean isCrawling() {
+		return !hasFinished;
+	}
+
+	@Override
+	public void waitFor() throws InterruptedException {
+		join();
+	}
+
+	@Override
+	public boolean isFresh() {
+		return fresh;
+	}
+
+}

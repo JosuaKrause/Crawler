@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="all" name="Create Runnable Jar for Project crawler">
+    <target name="text">
+        <jar destfile="./crawlerText.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="de.visone.crawl.TextMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        	<fileset dir="./bin">
+        		<exclude name="de/visone/crawl/LinkMain.class"/>
+        		<exclude name="de/visone/crawl/gui/LinkCrawler.class"/>
+        		<exclude name="de/visone/crawl/out/LinkWriter.class"/>
+        		<exclude name="de/visone/crawl/google/**"/>
+        		<exclude name="de/visone/crawl/wiki/**"/>
+        	</fileset>
+            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+        </jar>
+    </target>
+	<target name="link">
+        <jar destfile="./crawlerLink.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="de.visone.crawl.LinkMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        	<fileset dir="./bin">
+                <exclude name="de/visone/crawl/TextMain.class"/>
+        		<exclude name="de/visone/crawl/gui/TextCrawler.class"/>
+        		<exclude name="de/visone/crawl/out/TextWriter.class"/>
+        		<exclude name="de/visone/crawl/google/**"/>
+        		<exclude name="de/visone/crawl/wiki/**"/>
+            </fileset>
+            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+        </jar>
+	</target>
+	<target name="google">
+        <jar destfile="./crawlerGoogle.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="de.visone.crawl.google.GoogleResults"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="./bin">
+                <exclude name="de/visone/crawl/TextMain.class"/>
+                <exclude name="de/visone/crawl/out/TextWriter.class"/>
+            	<exclude name="de/visone/crawl/out/LinkWriter.class"/>
+            	<exclude name="de/visone/crawl/LinkMain.class"/>
+            	<exclude name="de/visone/crawl/wiki/**"/>
+            </fileset>
+            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+        </jar>
+    </target>
+	<target name="wiki">
+        <jar destfile="./crawlerWiki.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="de.visone.crawl.wiki.WikiResults"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="./bin">
+                <exclude name="de/visone/crawl/TextMain.class"/>
+                <exclude name="de/visone/crawl/out/TextWriter.class"/>
+                <exclude name="de/visone/crawl/LinkMain.class"/>
+            	<exclude name="de/visone/crawl/google/**"/>
+            </fileset>
+            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+        </jar>
+    </target>
+	<target name="all" depends="text,link,google,wiki" />
+</project>

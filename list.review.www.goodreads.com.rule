@@ -1,0 +1,8 @@
+[blacklist]
+allow:http://www.goodreads.com/book/show/.*
+regexp:.*
+
+[queries]
++ td class="rating"
++ td class="title"
+

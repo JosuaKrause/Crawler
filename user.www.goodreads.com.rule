@@ -1,0 +1,9 @@
+[blacklist]
+allow:.*shelf=read.*
+regexp:.*
+
+[queries]
++ a class="actionLinkLite" shape="rect" href="shelf=read"
++ div class="grey500BoxContent"
+- script
+
