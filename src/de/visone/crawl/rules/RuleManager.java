@@ -17,7 +17,11 @@ import java.util.Set;
 
 public class RuleManager {
 
-	public static final File BASE = new File(".");
+	private static File BASE = new File(".");
+
+	public static void setBaseDir(final File base) {
+		BASE = base;
+	}
 
 	public static final String EXT = ".rule";
 
