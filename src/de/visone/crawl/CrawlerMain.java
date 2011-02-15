@@ -21,9 +21,8 @@ public class CrawlerMain {
 		System.err.println("<ruledir>: The directory with the rules");
 		System.err.println("    it should also contain a file " + START);
 		System.err.println("    containing the start URL(s)");
-		System.err.println("<listener>: The " + CrawlWorker.class.getName()
-				+ " implementing");
-		System.err.println("    listener");
+		System.err.println("<listener>: The " + CrawlWorker.class.getName());
+		System.err.println("    implementing listener");
 		System.exit(1);
 	}
 
