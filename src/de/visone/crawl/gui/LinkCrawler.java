@@ -32,12 +32,12 @@ public class LinkCrawler extends CrawlerDialog {
 			100000, 100));
 
 	public LinkCrawler(final Window owner) {
-		this(owner, "Crawl links...", true);
+		this(owner, "Crawl links...", true, "http://");
 	}
 
 	public LinkCrawler(final Window owner, final String title,
-			final boolean showProgress) {
-		super(owner, title, showProgress);
+			final boolean showProgress, final String iniURL) {
+		super(owner, title, showProgress, iniURL);
 	}
 
 	@Override

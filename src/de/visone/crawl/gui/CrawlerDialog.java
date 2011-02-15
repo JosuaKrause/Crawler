@@ -66,15 +66,15 @@ public abstract class CrawlerDialog extends JDialog {
 	private final boolean showProgress;
 
 	public CrawlerDialog(final Window owner, final String title) {
-		this(owner, title, true);
+		this(owner, title, true, "http://");
 	}
 
 	public CrawlerDialog(final Window owner, final String title,
-			final boolean showProgress) {
+			final boolean showProgress, final String iniURL) {
 		super(owner, title, ModalityType.DOCUMENT_MODAL);
 		this.showProgress = showProgress;
 		setLayout(new BorderLayout());
-		urlField = new JTextField("http://", 50);
+		urlField = new JTextField(iniURL, 50);
 		urlField.setCaretPosition(urlField.getText().length());
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
 
