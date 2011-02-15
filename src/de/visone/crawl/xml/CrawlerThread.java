@@ -7,15 +7,15 @@ import org.xml.sax.SAXException;
 import de.visone.crawl.Settings;
 import de.visone.crawl.gui.CrawlerDialog;
 import de.visone.crawl.out.CrawlListener;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
-import de.visone.crawl.sys.UrlPool;
 import de.visone.crawl.sys.Utils;
 
 public class CrawlerThread extends Thread implements ProgressProducer {
 
 	private final String userAgent;
 
-	private final UrlPool pool;
+	private final AbstractUrlPool pool;
 
 	private final int maxDepth;
 
@@ -37,7 +37,7 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 
 	private volatile boolean fresh = true;
 
-	public CrawlerThread(final UrlPool pool, final Settings s,
+	public CrawlerThread(final AbstractUrlPool pool, final Settings s,
 			final CrawlListener listener) {
 		super("Crawl-Thread");
 		this.pool = pool;

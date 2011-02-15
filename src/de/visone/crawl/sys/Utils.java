@@ -347,8 +347,9 @@ public class Utils {
 		return str.replace(c.toString(), "%" + hex.substring(hex.length() - 2));
 	}
 
-	public static void crawl(final CrawlState state, final UrlPool pool,
-			final String userAgent) throws SAXException, IOException {
+	public static void crawl(final CrawlState state,
+			final AbstractUrlPool pool, final String userAgent)
+			throws SAXException, IOException {
 		final Parser p = Utils.createTagSoupParser();
 		final InputSource s = createInputSource(state.getURL(), null, userAgent);
 		final SaxParser sxp = new SaxParser(state, pool);

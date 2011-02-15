@@ -6,8 +6,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
-import de.visone.crawl.sys.UrlPool;
 import de.visone.crawl.sys.Utils;
 import de.visone.crawl.texter.Texter;
 
@@ -15,13 +15,13 @@ public class SaxParser extends DefaultHandler {
 
 	private final CrawlState state;
 
-	private final UrlPool pool;
+	private final AbstractUrlPool pool;
 
 	private URL link;
 
 	private StringBuilder linkText;
 
-	public SaxParser(final CrawlState state, final UrlPool pool) {
+	public SaxParser(final CrawlState state, final AbstractUrlPool pool) {
 		this.state = state;
 		this.pool = pool;
 		link = null;

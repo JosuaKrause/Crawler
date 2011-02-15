@@ -27,6 +27,7 @@ import de.visone.crawl.gui.CrawlerDialog;
 import de.visone.crawl.rules.BlacklistFilter;
 import de.visone.crawl.rules.HtmlQuery;
 import de.visone.crawl.rules.RuleManager;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
 import de.visone.crawl.sys.UrlPool;
 import de.visone.crawl.sys.Utils;
@@ -301,7 +302,7 @@ public class RuleEditorDialog extends JDialog implements QueryManager {
 		} else {
 			HtmlQuery.addStd(q);
 		}
-		final UrlPool pool = new UrlPool();
+		final AbstractUrlPool pool = new UrlPool();
 		final TreeTexterImpl tti = new TreeTexterImpl(example);
 		final CrawlState state = new CrawlState(example, 0, tti);
 		Utils.crawl(state, pool, Settings.userAgents[0]);

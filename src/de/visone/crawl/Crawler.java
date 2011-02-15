@@ -12,6 +12,7 @@ import de.visone.crawl.accept.MaxDepth;
 import de.visone.crawl.accept.NoFollowAccepter;
 import de.visone.crawl.accept.OnlySameHost;
 import de.visone.crawl.out.CrawlListener;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.UrlPool;
 import de.visone.crawl.sys.Utils;
 import de.visone.crawl.texter.TexterFactory;
@@ -52,8 +53,7 @@ public class Crawler {
 	 */
 	public Crawler(final Settings set, final String start,
 			final CrawlListener listener, final Object... followUp) {
-		final UrlPool pool = new UrlPool(set.meanDelay, new TexterFactory(set),
-				set.killLimit);
+		final AbstractUrlPool pool = createUrlPool(set);
 		final URL ustart = Utils.getURL(start);
 		pool.append(ustart, null);
 		for (final Object url : followUp) {
@@ -90,6 +90,10 @@ public class Crawler {
 					+ set.authorizationName + ":" + set.authorizationPassword);
 		}
 		thread = new CrawlerThread(pool, set, listener);
+	}
+
+	protected AbstractUrlPool createUrlPool(final Settings set) {
+		return new UrlPool(set.meanDelay, new TexterFactory(set), set.killLimit);
 	}
 
 	/**

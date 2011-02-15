@@ -8,10 +8,10 @@ import java.util.Stack;
 import org.xml.sax.Attributes;
 
 import de.visone.crawl.gui.editor.Node;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
 import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
-import de.visone.crawl.sys.UrlPool;
 
 public class TreeTexterImpl implements Texter {
 
@@ -50,15 +50,15 @@ public class TreeTexterImpl implements Texter {
 	}
 
 	@Override
-	public void link(final URL link, final String text, final UrlPool pool,
-			final CrawlState state) {
+	public void link(final URL link, final String text,
+			final AbstractUrlPool pool, final CrawlState state) {
 		pool.append(link, state);
 		stack.peek().addLink(new Link(link));
 	}
 
 	@Override
-	public void img(final URL img, final String text, final UrlPool pool,
-			final CrawlState state) {
+	public void img(final URL img, final String text,
+			final AbstractUrlPool pool, final CrawlState state) {
 		stack.peek().addImg(new Img(img));
 	}
 

@@ -8,10 +8,10 @@ import java.util.Stack;
 import org.xml.sax.Attributes;
 
 import de.visone.crawl.rules.HtmlQuery;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
 import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
-import de.visone.crawl.sys.UrlPool;
 
 public class NoTextTexterImpl implements Texter {
 
@@ -109,8 +109,8 @@ public class NoTextTexterImpl implements Texter {
 	}
 
 	@Override
-	public void link(final URL link, final String name, final UrlPool pool,
-			final CrawlState state) {
+	public void link(final URL link, final String name,
+			final AbstractUrlPool pool, final CrawlState state) {
 		if (links == null) {
 			return;
 		}
@@ -134,8 +134,8 @@ public class NoTextTexterImpl implements Texter {
 	}
 
 	@Override
-	public void img(final URL img, final String text, final UrlPool pool,
-			final CrawlState state) {
+	public void img(final URL img, final String text,
+			final AbstractUrlPool pool, final CrawlState state) {
 		if (!acceptLink()) {
 			return;
 		}

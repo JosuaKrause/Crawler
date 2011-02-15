@@ -23,6 +23,7 @@ import de.visone.crawl.Settings;
 import de.visone.crawl.rules.HtmlQuery;
 import de.visone.crawl.rules.RuleManager;
 import de.visone.crawl.rules.TextRepresentation;
+import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.CrawlState;
 import de.visone.crawl.sys.UrlPool;
 import de.visone.crawl.sys.Utils;
@@ -35,7 +36,7 @@ public class TextRuleEditor extends RuleEditor {
 				.getURL("http://de.wikipedia.org/wiki/Philip_K._Dick");
 		final HtmlQuery q = new HtmlQuery("foobar");
 		RuleManager.addRule(RuleManager.getRuleForURL(url), null, q);
-		final UrlPool pool = new UrlPool();
+		final AbstractUrlPool pool = new UrlPool();
 		final TreeTexterImpl tti = new TreeTexterImpl(url);
 		final CrawlState state = new CrawlState(url, 0, tti);
 		Utils.crawl(state, pool, Settings.userAgents[0]);
