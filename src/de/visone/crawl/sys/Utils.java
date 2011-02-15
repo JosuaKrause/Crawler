@@ -101,7 +101,7 @@ public class Utils {
 			if (url.indexOf("://") < 0) {
 				String path = base.getPath();
 				path = path.substring(0, path.lastIndexOf('/'));
-				url = "http://" + base.getHost()
+				url = base.getProtocol() + "://" + base.getHost()
 						+ (url.startsWith("/") ? url : path + "/" + url);
 			}
 		}
@@ -309,7 +309,8 @@ public class Utils {
 
 	private static String[] assuredContentTypes = new String[] { "text/html",
 			"text/plain", "text/xml", "application/x-latex",
-			"application/xhtml+xml", };
+			"application/xhtml+xml", "application/rss+xml",
+			"application/atom+xml" };
 
 	private static String[] invalidContentTypes = new String[] {
 			"application/EDI", "application/json", "application/javascript",
