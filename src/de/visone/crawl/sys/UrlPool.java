@@ -90,6 +90,11 @@ public class UrlPool {
 	}
 
 	public boolean append(final URL url, final CrawlState state) {
+		return append(url, state, false);
+	}
+
+	public boolean append(final URL url, final CrawlState state,
+			final boolean dry) {
 		if (url == null) {
 			return false;
 		}
@@ -104,7 +109,9 @@ public class UrlPool {
 		if (state == null) {
 			final CrawlState start = new CrawlState(url,
 					urls.isEmpty() ? 0 : 1, texter.getInstance(url));
-			add(start);
+			if (!dry) {
+				add(start);
+			}
 			return true;
 		}
 		final CrawlState link = new CrawlState(url, state.getDepth() + 1,
@@ -117,7 +124,9 @@ public class UrlPool {
 				return false;
 			}
 		}
-		add(link);
+		if (!dry) {
+			add(link);
+		}
 		return true;
 	}
 

@@ -1,6 +1,7 @@
 package de.visone.crawl.gui.editor;
 
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -56,10 +57,11 @@ public class TextRuleEditor extends RuleEditor {
 
 	private int autoCaret;
 
-	private RuleListener listener;
+	private final List<RuleListener> listener;
 
 	public TextRuleEditor(final Node root, final List<String> r) {
 		super(root, r);
+		listener = new LinkedList<RuleListener>();
 		autoCaret = 0;
 		curRep = new TextRepresentation(root);
 		highlighter = new DefaultHighlighter();
@@ -104,8 +106,8 @@ public class TextRuleEditor extends RuleEditor {
 		tableModel.addTableModelListener(tml);
 	}
 
-	public void setRuleListener(final RuleListener l) {
-		listener = l;
+	public void addRuleListener(final RuleListener l) {
+		listener.add(l);
 		if (l != null) {
 			final HtmlQuery q = new HtmlQuery("anon");
 			RuleManager.addQuery(rules, q);
@@ -119,8 +121,8 @@ public class TextRuleEditor extends RuleEditor {
 		curRep.removeHighlights(highlighter);
 		curRep.highlight(highlighter, null);
 		curRep.setHighlight(root, q, highlighter);
-		if (listener != null) {
-			listener.changedRules(q);
+		for (final RuleListener l : listener) {
+			l.changedRules(q);
 		}
 	}
 

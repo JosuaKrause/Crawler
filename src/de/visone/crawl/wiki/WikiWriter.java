@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import de.visone.crawl.out.Content;
 import de.visone.crawl.out.LinkWriter;
+import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 
 public class WikiWriter extends LinkWriter {
@@ -212,11 +213,14 @@ public class WikiWriter extends LinkWriter {
 
 		private final Link[] other;
 
+		private final Img[] imgs;
+
 		private final String str;
 
 		public WikiContent(final Content c) {
 			accepted = new Link[0]; // c.getAcceptedLinks();
 			other = new Link[0]; // c.getOtherLinks();
+			imgs = new Img[0]; // c.getImages()
 			url = c.getURL();
 			str = interpretString(new Scanner(c.getText()), url.toString());
 		}
@@ -239,6 +243,11 @@ public class WikiWriter extends LinkWriter {
 		@Override
 		public String getText() {
 			return str;
+		}
+
+		@Override
+		public Img[] getImages() {
+			return imgs;
 		}
 
 	}

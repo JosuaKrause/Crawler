@@ -308,12 +308,16 @@ public class RuleEditorDialog extends JDialog implements QueryManager {
 		textRules = new TextRuleEditor(tti.getRoot(), q.getRules());
 		blRules = new BlacklistEditor(bf.getRules(), bf.getHosts());
 		final LinkViewer linkView = new LinkViewer(tti.getRoot(), this);
-		textRules.setRuleListener(linkView);
-		blRules.setRuleListener(linkView);
+		textRules.addRuleListener(linkView);
+		blRules.addRuleListener(linkView);
+		final ImageViewer imageView = new ImageViewer(tti.getRoot(), this);
+		textRules.addRuleListener(imageView);
+		blRules.addRuleListener(imageView);
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Text / Links", textRules);
 		tabbedPane.addTab("Blacklist", blRules);
 		tabbedPane.addTab("Links", new JScrollPane(linkView));
+		tabbedPane.addTab("Images", new JScrollPane(imageView));
 		rulePane.add(tabbedPane);
 	}
 

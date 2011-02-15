@@ -9,6 +9,7 @@ import org.xml.sax.Attributes;
 
 import de.visone.crawl.gui.editor.Node;
 import de.visone.crawl.sys.CrawlState;
+import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 import de.visone.crawl.sys.UrlPool;
 
@@ -56,6 +57,12 @@ public class TreeTexterImpl implements Texter {
 	}
 
 	@Override
+	public void img(final URL img, final String text, final UrlPool pool,
+			final CrawlState state) {
+		stack.peek().addImg(new Img(img));
+	}
+
+	@Override
 	public void string(final String str) {
 		stack.peek().addText(str.replaceAll("\\s+", " ").trim());
 	}
@@ -70,6 +77,13 @@ public class TreeTexterImpl implements Texter {
 		final Set<Link> links = new HashSet<Link>();
 		root.getDescendantLinks(links);
 		return links.toArray(new Link[links.size()]);
+	}
+
+	@Override
+	public Img[] getImages() {
+		final Set<Img> imgs = new HashSet<Img>();
+		root.getDescendantImages(imgs);
+		return imgs.toArray(new Img[imgs.size()]);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package de.visone.crawl.gui.editor;
 import java.awt.Color;
 import java.awt.Component;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -93,11 +94,12 @@ public class BlacklistEditor extends Editor {
 
 	private String reject;
 
-	private RuleListener listener;
+	private final List<RuleListener> listener;
 
 	public BlacklistEditor(final List<String> r, final Set<String> hosts) {
 		super(r);
 		this.hosts = hosts;
+		listener = new LinkedList<RuleListener>();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.addMouseListener(new PopupListener(
@@ -213,8 +215,8 @@ public class BlacklistEditor extends Editor {
 		}
 	}
 
-	public void setRuleListener(final RuleListener l) {
-		listener = l;
+	public void addRuleListener(final RuleListener l) {
+		listener.add(l);
 		if (l != null) {
 			l.changedBlacklist(filter);
 		}
@@ -223,8 +225,8 @@ public class BlacklistEditor extends Editor {
 	private void recalcBlacklist() {
 		filter = new BlacklistFilter(hosts);
 		RuleManager.addBlacklist(rules, filter);
-		if (listener != null) {
-			listener.changedBlacklist(filter);
+		for (final RuleListener l : listener) {
+			l.changedBlacklist(filter);
 		}
 	}
 

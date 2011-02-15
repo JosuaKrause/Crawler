@@ -9,6 +9,7 @@ import org.xml.sax.Attributes;
 
 import de.visone.crawl.rules.HtmlQuery;
 import de.visone.crawl.sys.CrawlState;
+import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 import de.visone.crawl.sys.UrlPool;
 
@@ -19,6 +20,8 @@ public class NoTextTexterImpl implements Texter {
 	private final Map<URL, Link> accepted;
 
 	private final Map<URL, Link> other;
+
+	private final Map<URL, Img> images;
 
 	private int acceptLinks;
 
@@ -33,6 +36,7 @@ public class NoTextTexterImpl implements Texter {
 		this.links = links;
 		accepted = links == null ? null : new HashMap<URL, Link>();
 		other = links == null ? null : new HashMap<URL, Link>();
+		images = links == null ? null : new HashMap<URL, Img>();
 		acceptLinks = exceptLinks = 0;
 		linkStack = links == null ? null : new Stack<Integer>();
 	}
@@ -127,6 +131,26 @@ public class NoTextTexterImpl implements Texter {
 			}
 			other.get(link).add(name);
 		}
+	}
+
+	@Override
+	public void img(final URL img, final String text, final UrlPool pool,
+			final CrawlState state) {
+		if (!acceptLink()) {
+			return;
+		}
+		if (!pool.append(img, state, true)) {
+			return;
+		}
+		if (!images.containsKey(img)) {
+			images.put(img, new Img(img));
+		}
+		images.get(img).add(state.getURL(), text);
+	}
+
+	@Override
+	public Img[] getImages() {
+		return images.values().toArray(new Img[images.size()]);
 	}
 
 	@Override

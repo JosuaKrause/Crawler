@@ -2,6 +2,7 @@ package de.visone.crawl.out;
 
 import java.net.URL;
 
+import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 
 /**
@@ -27,6 +28,11 @@ public interface Content {
 	 * @return A list of the links that were not followed.
 	 */
 	Link[] getOtherLinks();
+
+	/**
+	 * @return A list of captured images.
+	 */
+	Img[] getImages();
 
 	/**
 	 * @return The URL of the crawled page.

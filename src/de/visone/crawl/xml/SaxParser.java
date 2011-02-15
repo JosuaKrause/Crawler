@@ -40,6 +40,12 @@ public class SaxParser extends DefaultHandler {
 				link = Utils.getURL(href, state.getURL());
 				linkText = new StringBuilder();
 			}
+		} else if (qName.equals("img")) {
+			final String src = attributes.getValue("src");
+			if (src != null) {
+				final URL link = Utils.getURL(src, state.getURL());
+				t.img(link, attributes.getValue("alt"), pool, state);
+			}
 		}
 	}
 

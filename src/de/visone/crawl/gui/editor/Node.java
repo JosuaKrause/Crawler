@@ -13,6 +13,7 @@ import javax.swing.tree.TreeNode;
 import org.xml.sax.Attributes;
 
 import de.visone.crawl.rules.HtmlQuery;
+import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 
 public class Node implements TreeNode {
@@ -26,6 +27,8 @@ public class Node implements TreeNode {
 	private final List<Node> childs;
 
 	private final List<Link> links;
+
+	private final List<Img> imgs;
 
 	private final Map<Node, String> after;
 
@@ -43,6 +46,7 @@ public class Node implements TreeNode {
 		}
 		childs = new LinkedList<Node>();
 		links = new LinkedList<Link>();
+		imgs = new LinkedList<Img>();
 		after = new HashMap<Node, String>();
 		toStr = null;
 	}
@@ -86,6 +90,10 @@ public class Node implements TreeNode {
 		links.add(lnk);
 	}
 
+	public void addImg(final Img img) {
+		imgs.add(img);
+	}
+
 	public void getDescendantLinks(final Set<Link> l) {
 		getDescendantLinks(null, l, null);
 	}
@@ -104,6 +112,28 @@ public class Node implements TreeNode {
 		for (final Node n : childs) {
 			n.getDescendantLinks(accept, other, q);
 		}
+	}
+
+	public void getDescendantImages(final Set<Img> i) {
+		getDescendantImages(i, null);
+	}
+
+	public void getDescendantImages(final Set<Img> i, HtmlQuery q) {
+		final int a = accepts(q);
+		if (a > 0) {
+			i.addAll(imgs);
+		} else {
+			if (a < 0) {
+				q = null;
+			}
+		}
+		for (final Node n : childs) {
+			n.getDescendantImages(i, q);
+		}
+	}
+
+	public List<Img> getImages() {
+		return imgs;
 	}
 
 	public void getDescendantText(final StringBuilder sb) {

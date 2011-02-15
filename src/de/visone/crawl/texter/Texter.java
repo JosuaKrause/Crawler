@@ -20,6 +20,8 @@ public interface Texter extends Content {
 
 	void link(URL link, String text, UrlPool pool, CrawlState state);
 
+	void img(URL img, String text, UrlPool pool, CrawlState state);
+
 	void dispose();
 
 }
