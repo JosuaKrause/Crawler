@@ -72,7 +72,7 @@ public abstract class AbstractUrlPool {
 		}
 		final CrawlState link = new CrawlState(url, state.getDepth() + 1,
 				texter.getInstance(url));
-		if (acceptedNotAdded(link)) {
+		if (acceptedNotAdded(link, state)) {
 			return true;
 		}
 		for (final LinkAccepter acc : accepter) {
@@ -98,10 +98,16 @@ public abstract class AbstractUrlPool {
 	/**
 	 * @param link
 	 *            The link.
+	 * @param parent
+	 *            The parent of this link or <code>null</code>.
 	 * @return <code>true</code> if the link was accepted but (e.g. because it
 	 *         is already in the list) it was not added to the queue.
+	 *         <code>false</code> if the link was only accepted.
+	 * 
+	 * @see #add(CrawlState, CrawlState)
 	 */
-	protected abstract boolean acceptedNotAdded(CrawlState link);
+	protected abstract boolean acceptedNotAdded(CrawlState link,
+			CrawlState parent);
 
 	/**
 	 * @return The next URL in the Queue. This method should block (via

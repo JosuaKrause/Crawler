@@ -72,7 +72,7 @@ public class UrlPool extends AbstractUrlPool {
 	}
 
 	@Override
-	protected boolean acceptedNotAdded(final CrawlState link) {
+	protected boolean acceptedNotAdded(final CrawlState link, final CrawlState _) {
 		return done.contains(link);
 	}
 

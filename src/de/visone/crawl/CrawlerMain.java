@@ -15,8 +15,6 @@ import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.DepthFstUrlPool;
 import de.visone.crawl.sys.Utils;
 import de.visone.crawl.texter.TexterFactory;
-import de.visone.crawl.xml.ProgressAdapter;
-import de.visone.crawl.xml.ProgressListener;
 
 public class CrawlerMain {
 
@@ -78,22 +76,23 @@ public class CrawlerMain {
 			} else {
 				final Crawler c = new Crawler(cl.getSettings(), starts.get(0),
 						cl, starts.size() > 1 ? starts
-								.subList(1, starts.size()) : new String[0]) {
+								.subList(1, starts.size()).toArray()
+								: new Object[0]) {
 					@Override
 					protected AbstractUrlPool createUrlPool(final Settings set) {
 						return new DepthFstUrlPool(new TexterFactory(set),
 								set.meanDelay, set.killLimit);
 					}
 				};
-				final ProgressListener pl = new ProgressAdapter() {
-					@Override
-					public void progressAdvanced(final double main,
-							final double secondary) {
-						System.err.println("Depth: " + main + "% Progress: "
-								+ secondary + "%");
-					}
-				};
-				c.getProgressProducer().setProgressListener(pl);
+				// final ProgressListener pl = new ProgressAdapter() {
+				// @Override
+				// public void progressAdvanced(final double main,
+				// final double secondary) {
+				// System.err.println("Depth: " + main + "% Progress: "
+				// + secondary + "%");
+				// }
+				// };
+				// c.getProgressProducer().setProgressListener(pl);
 				c.start();
 			}
 		} catch (final Exception e) {
@@ -104,7 +103,11 @@ public class CrawlerMain {
 
 	private static void fillStarts(final List<String> starts, final Scanner s) {
 		while (s.hasNextLine()) {
-			starts.add(s.nextLine().trim());
+			final String line = s.nextLine().trim();
+			if (line.isEmpty()) {
+				continue;
+			}
+			starts.add(line);
 		}
 		s.close();
 	}

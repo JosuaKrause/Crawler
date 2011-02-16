@@ -28,10 +28,10 @@ public class CrawlWorker extends XmlWriter {
 
 	private Object curParent;
 
-	public CrawlWorker(final OutputStream out, final File imgDump)
+	public CrawlWorker(final OutputStream out, final File dump)
 			throws IOException {
 		super(out, "results");
-		this.imgDump = new File(imgDump, "imgs/");
+		imgDump = new File(dump, "imgs/");
 		Utils.ensureDir(imgDump);
 		cur = null;
 		curParent = null;
@@ -45,6 +45,12 @@ public class CrawlWorker extends XmlWriter {
 	public Settings getSettings() {
 		if (settings == null) {
 			settings = new Settings();
+			settings.domainSpecific = true;
+			settings.onlySameHost = true;
+			settings.doLinks = true;
+			settings.doText = true;
+			settings.killLimit = 0;
+			settings.maxDepth = 5;
 			// TODO: configure settings
 		}
 		return settings;
@@ -54,11 +60,13 @@ public class CrawlWorker extends XmlWriter {
 	protected void crawled(final Content c) throws XMLStreamException,
 			IOException {
 		final Object p = c.getParent();
-		if (curParent != null && p != curParent) {
+		if (curParent != null && p != null && p != curParent) {
 			throw new RuntimeException("wrong ordering of URLs");
 		}
 		if (p == null) { // new Block
-			cur.write();
+			if (cur != null) {
+				cur.write();
+			}
 			xml.flush();
 			curParent = c;
 			cur = new BlockContent(c.getURL());
@@ -149,6 +157,9 @@ public class CrawlWorker extends XmlWriter {
 				xml.writeStartElement("child");
 				xml.writeAttribute("url", link.getUrl().toString());
 				for (final String s : link.getText()) {
+					if (s.isEmpty()) {
+						continue;
+					}
 					xml.writeStartElement("text");
 					xml.writeCData(s);
 					xml.writeEndElement();
@@ -161,12 +172,15 @@ public class CrawlWorker extends XmlWriter {
 				xml.writeAttribute("file", getFileForImg(img).getAbsolutePath()
 						.toString());
 				for (final String s : img.getAlts()) {
+					if (s.isEmpty()) {
+						continue;
+					}
 					xml.writeStartElement("alt");
 					xml.writeCData(s);
 					xml.writeEndElement();
 				}
 				for (final URL u : img.getParents()) {
-					xml.writeEmptyElement("referrer");
+					xml.writeEmptyElement("referer");
 					xml.writeAttribute("url", u.toString());
 				}
 				xml.writeEndElement();

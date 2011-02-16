@@ -192,6 +192,7 @@ public abstract class CrawlerDialog extends JDialog {
 		setLocationRelativeTo(owner);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		wasPacked = false;
+		enableEdit();
 	}
 
 	private void setCookie() {

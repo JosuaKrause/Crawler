@@ -1,9 +1,12 @@
 package de.visone.crawl.sys;
 
+import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 import de.visone.crawl.texter.Texter;
 import de.visone.crawl.texter.TexterFactory;
@@ -14,6 +17,8 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 
 	private final Map<Texter, Queue<CrawlState>> urls;
 
+	private final Map<Texter, Set<URL>> already;
+
 	private Texter current;
 
 	public DepthFstUrlPool(final TexterFactory texter, final long meanDelay,
@@ -21,16 +26,24 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 		super(texter, meanDelay, killLimit);
 		parentMap = new HashMap<CrawlState, Texter>();
 		urls = new HashMap<Texter, Queue<CrawlState>>();
+		already = new HashMap<Texter, Set<URL>>();
 		current = null;
 	}
 
 	@Override
-	protected boolean acceptedNotAdded(final CrawlState link) {
-		return false;
+	protected boolean acceptedNotAdded(final CrawlState link,
+			final CrawlState parent) {
+		if (!parentMap.containsKey(parent)) {
+			return false;
+		}
+		final Texter p = parentMap.get(parent);
+		return already.get(p).contains(link.getURL());
 	}
 
 	@Override
 	protected void add(final CrawlState link, final CrawlState parent) {
+		// System.err.println("Link: " + link.getURL() + " Parent: "
+		// + (parent != null ? parent.getURL() : "null"));
 		final Texter t = link.getTexter();
 		if (parent == null) {
 			parentMap.put(link, link.getTexter());
@@ -50,6 +63,9 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 		final Queue<CrawlState> q = new LinkedList<CrawlState>();
 		q.add(link);
 		urls.put(link.getTexter(), q);
+		final Set<URL> a = new HashSet<URL>();
+		a.add(link.getURL());
+		already.put(link.getTexter(), a);
 	}
 
 	private void addHighLevel(final CrawlState link, final Texter parent) {
@@ -58,6 +74,8 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 			throw new NullPointerException("q");
 		}
 		q.add(link);
+		final Set<URL> a = already.get(parent);
+		a.add(link.getURL());
 	}
 
 	@Override
@@ -94,6 +112,9 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 		if (urls.isEmpty()) {
 			return false;
 		}
+		if (urls.size() > 1) {
+			return true;
+		}
 		if (current == null) {
 			return true;
 		}
@@ -101,10 +122,7 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 		if (q == null) {
 			throw new NullPointerException("q");
 		}
-		if (q.isEmpty()) {
-			return false;
-		}
-		return true;
+		return !q.isEmpty();
 	}
 
 	@Override
