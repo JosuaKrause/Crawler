@@ -1,15 +1,17 @@
 package de.visone.crawl;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.OutputStream;
+
+import javax.xml.stream.XMLStreamException;
 
 import de.visone.crawl.out.Content;
-import de.visone.crawl.out.CrawlListener;
+import de.visone.crawl.out.XmlWriter;
 
-public class CrawlWorker implements CrawlListener {
+public class CrawlWorker extends XmlWriter {
 
-	public CrawlWorker(final PrintStream out) {
-		// TODO Auto-generated constructor stub
+	public CrawlWorker(final OutputStream out) throws IOException {
+		super(out);
 	}
 
 	/**
@@ -22,13 +24,7 @@ public class CrawlWorker implements CrawlListener {
 	}
 
 	@Override
-	public void pageCrawled(final Content c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void close() throws IOException {
+	protected void crawled(final Content c) throws XMLStreamException {
 		// TODO Auto-generated method stub
 
 	}
