@@ -99,6 +99,16 @@ public class TreeTexterImpl implements Texter {
 	}
 
 	@Override
+	public Object getParent() {
+		return null;
+	}
+
+	@Override
+	public void setParent(final Texter c) {
+		// not supported
+	}
+
+	@Override
 	public void dispose() {
 		root = null;
 	}

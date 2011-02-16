@@ -22,6 +22,8 @@ public interface Texter extends Content {
 
 	void img(URL img, String text, AbstractUrlPool pool, CrawlState state);
 
+	void setParent(Texter c);
+
 	void dispose();
 
 }

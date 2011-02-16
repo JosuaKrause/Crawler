@@ -31,6 +31,8 @@ public class NoTextTexterImpl implements Texter {
 
 	private final Stack<Integer> linkStack;
 
+	private Object parent;
+
 	public NoTextTexterImpl(final URL url, final HtmlQuery links) {
 		this.url = url;
 		this.links = links;
@@ -39,6 +41,7 @@ public class NoTextTexterImpl implements Texter {
 		images = links == null ? null : new HashMap<URL, Img>();
 		acceptLinks = exceptLinks = 0;
 		linkStack = links == null ? null : new Stack<Integer>();
+		parent = null;
 	}
 
 	@Override
@@ -154,6 +157,16 @@ public class NoTextTexterImpl implements Texter {
 	}
 
 	@Override
+	public Object getParent() {
+		return parent;
+	}
+
+	@Override
+	public void setParent(final Texter c) {
+		parent = c;
+	}
+
+	@Override
 	public void dispose() {
 		if (accepted != null) {
 			accepted.clear();
@@ -164,5 +177,6 @@ public class NoTextTexterImpl implements Texter {
 		if (images != null) {
 			images.clear();
 		}
+		parent = null;
 	}
 }

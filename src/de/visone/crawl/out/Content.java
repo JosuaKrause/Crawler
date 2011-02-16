@@ -39,4 +39,9 @@ public interface Content {
 	 */
 	URL getURL();
 
+	/**
+	 * @return The parent of this Content if set or <code>null</code> if a
+	 *         parent is not supported / set.
+	 */
+	Object getParent();
 }
