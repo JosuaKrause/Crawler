@@ -250,6 +250,11 @@ public class WikiWriter extends LinkWriter {
 			return imgs;
 		}
 
+		@Override
+		public Object getParent() {
+			return null;
+		}
+
 	}
 
 	@Override

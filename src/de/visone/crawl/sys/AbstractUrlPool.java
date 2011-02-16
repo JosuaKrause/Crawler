@@ -95,16 +95,50 @@ public abstract class AbstractUrlPool {
 		return res;
 	}
 
+	/**
+	 * @param link
+	 *            The link.
+	 * @return <code>true</code> if the link was accepted but (e.g. because it
+	 *         is already in the list) it was not added to the queue.
+	 */
 	protected abstract boolean acceptedNotAdded(CrawlState link);
 
+	/**
+	 * @return The next URL in the Queue. This method should block (via
+	 *         {@link #delayFor(CrawlState)}) until the next item is allowed to
+	 *         be crawled.
+	 * @throws InterruptedException
+	 *             Thrown by {@link #delayFor(CrawlState)}.
+	 */
 	protected abstract CrawlState getNextUrl() throws InterruptedException;
 
+	/**
+	 * Adds a link to the queue.
+	 * 
+	 * @param link
+	 *            The link.
+	 * @param parent
+	 *            The parent of this link. This is not always the only parent
+	 *            since many pages can point to this particular URL. It may also
+	 *            be <code>null</code>.
+	 */
 	protected abstract void add(CrawlState link, CrawlState parent);
 
+	/**
+	 * @return Whether there is a next URL to crawl.
+	 */
 	protected abstract boolean hasNextUrl();
 
+	/**
+	 * @return Defines the link depth for initial URLs.
+	 */
 	protected abstract int statelessDepth();
 
+	/**
+	 * @param level
+	 *            The link depth.
+	 * @return Gives the progress for the given level.
+	 */
 	public abstract double getProgress(final int level);
 
 	private boolean hasReachedKillLimit() {
