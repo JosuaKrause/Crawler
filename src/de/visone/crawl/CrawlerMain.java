@@ -3,6 +3,7 @@ package de.visone.crawl;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import de.visone.crawl.gui.CrawlerDialog;
 import de.visone.crawl.gui.LinkCrawler;
@@ -12,6 +13,7 @@ import de.visone.crawl.sys.DepthFstUrlPool;
 import de.visone.crawl.sys.Utils;
 import de.visone.crawl.texter.TexterFactory;
 import de.visone.crawl.xml.ProgressAdapter;
+import de.visone.crawl.xml.ProgressListener;
 
 public class CrawlerMain {
 
@@ -50,9 +52,9 @@ public class CrawlerMain {
 		final File ruledir = new File(arg(i++));
 		try {
 			final List<String> starts = new LinkedList<String>();
-			fillStarts(starts);
+			fillStarts(starts, new Scanner(System.in, Utils.UTF8));
 			RuleManager.setBaseDir(ruledir);
-			final CrawlWorker cl = new CrawlWorker();
+			final CrawlWorker cl = new CrawlWorker(System.out);
 			if (gui) {
 				final String start = starts.get(0);
 				final CrawlerDialog cd = new LinkCrawler(null,
@@ -69,15 +71,15 @@ public class CrawlerMain {
 								set.meanDelay, set.killLimit);
 					}
 				};
-				c.getProgressProducer().setProgressListener(
-						new ProgressAdapter() {
-							@Override
-							public void progressAdvanced(final double main,
-									final double secondary) {
-								System.err.println("Depth: " + main
-										+ "% Progress: " + secondary + "%");
-							}
-						});
+				final ProgressListener pl = new ProgressAdapter() {
+					@Override
+					public void progressAdvanced(final double main,
+							final double secondary) {
+						System.err.println("Depth: " + main + "% Progress: "
+								+ secondary + "%");
+					}
+				};
+				c.getProgressProducer().setProgressListener(pl);
 				c.start();
 			}
 		} catch (final Exception e) {
@@ -86,9 +88,11 @@ public class CrawlerMain {
 		}
 	}
 
-	private static void fillStarts(final List<String> starts) {
-		// TODO Auto-generated method stub
-
+	private static void fillStarts(final List<String> starts, final Scanner s) {
+		while (s.hasNextLine()) {
+			starts.add(s.nextLine().trim());
+		}
+		s.close();
 	}
 
 }

@@ -32,6 +32,11 @@ public class Utils {
 	public static final String NL = System.getProperty("line.separator");
 
 	/**
+	 * The name of the UTF-8 Charset.
+	 */
+	public static final String UTF8 = "UTF-8";
+
+	/**
 	 * Collects the garbage.
 	 */
 	public static void gc() {
