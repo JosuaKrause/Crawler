@@ -235,7 +235,13 @@ public class Utils {
 	 */
 	public static InputStream createInputStream(final URL url,
 			final String userAgent) throws IOException {
-		return createInputStream(getConnection(url), userAgent);
+		final HttpURLConnection http = getConnection(url);
+		final InputStream is = createInputStream(http, userAgent);
+		if (http.getResponseCode() != 200) {
+			throw new IOException("invalid response code: "
+					+ http.getResponseCode());
+		}
+		return is;
 	}
 
 	private static Map<String, String> customHeaders = new HashMap<String, String>();

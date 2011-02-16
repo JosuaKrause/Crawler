@@ -53,6 +53,10 @@ public class Img {
 		alt.add(a);
 	}
 
+	public String getHashedName() {
+		return Integer.toHexString(hashCode());
+	}
+
 	@Override
 	public int hashCode() {
 		return src.hashCode();

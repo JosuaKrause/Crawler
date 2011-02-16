@@ -18,9 +18,11 @@ import de.visone.crawl.xml.ProgressListener;
 public class CrawlerMain {
 
 	private static void usage() {
-		System.err.println("Usage: [-gui] <ruledir>");
+		System.err.println("Usage: [-gui] <ruledir> <imgdir>");
 		System.err.println("-gui: opens a gui for crawling");
 		System.err.println("<ruledir>: The directory with the rules");
+		System.err
+				.println("<imgdir>: The directory where the images should be stored");
 		System.err.println("STD_IN: a list of URLs");
 		System.err.println("STD_ERR: error informations");
 		System.err.println("STD_OUT: an xml representation of the contents");
@@ -50,11 +52,12 @@ public class CrawlerMain {
 			++i;
 		}
 		final File ruledir = new File(arg(i++));
+		final File imgDir = new File(arg(i++));
 		try {
 			final List<String> starts = new LinkedList<String>();
 			fillStarts(starts, new Scanner(System.in, Utils.UTF8));
 			RuleManager.setBaseDir(ruledir);
-			final CrawlWorker cl = new CrawlWorker(System.out);
+			final CrawlWorker cl = new CrawlWorker(System.out, imgDir);
 			if (gui) {
 				final String start = starts.get(0);
 				final CrawlerDialog cd = new LinkCrawler(null,

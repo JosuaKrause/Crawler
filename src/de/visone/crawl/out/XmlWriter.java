@@ -14,10 +14,13 @@ public abstract class XmlWriter implements CrawlListener {
 
 	protected final XMLStreamWriter xml;
 
-	public XmlWriter(final OutputStream out) throws IOException {
+	public XmlWriter(final OutputStream out, final String root)
+			throws IOException {
 		try {
 			xml = XMLOutputFactory.newFactory().createXMLStreamWriter(out,
 					Utils.UTF8);
+			xml.writeStartDocument();
+			xml.writeStartElement(root);
 		} catch (final XMLStreamException e) {
 			throw new IOException(e);
 		} catch (final FactoryConfigurationError e) {
@@ -31,14 +34,19 @@ public abstract class XmlWriter implements CrawlListener {
 			crawled(c);
 		} catch (final XMLStreamException e) {
 			e.printStackTrace();
+		} catch (final IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	protected abstract void crawled(Content c) throws XMLStreamException;
+	protected abstract void crawled(Content c) throws XMLStreamException,
+			IOException;
 
 	@Override
 	public void close() throws IOException {
 		try {
+			xml.writeEndElement();
+			xml.writeEndDocument();
 			xml.close();
 		} catch (final XMLStreamException e) {
 			throw new IOException(e);
