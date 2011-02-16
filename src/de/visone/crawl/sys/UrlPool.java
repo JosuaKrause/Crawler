@@ -49,7 +49,7 @@ public class UrlPool extends AbstractUrlPool {
 	}
 
 	@Override
-	protected void add(final CrawlState link) {
+	protected void add(final CrawlState link, final CrawlState _) {
 		synchronized (urls) {
 			urls.add(link);
 			done.add(link);

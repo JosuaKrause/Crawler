@@ -17,7 +17,7 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 	}
 
 	@Override
-	protected void add(final CrawlState link) {
+	protected void add(final CrawlState link, final CrawlState parent) {
 		// TODO Auto-generated method stub
 
 	}

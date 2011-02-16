@@ -161,5 +161,8 @@ public class NoTextTexterImpl implements Texter {
 		if (other != null) {
 			other.clear();
 		}
+		if (images != null) {
+			images.clear();
+		}
 	}
 }

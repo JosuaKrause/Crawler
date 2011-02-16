@@ -66,7 +66,7 @@ public abstract class AbstractUrlPool {
 			final CrawlState start = new CrawlState(url, statelessDepth(),
 					texter.getInstance(url));
 			if (!dry) {
-				add(start);
+				add(start, null);
 			}
 			return true;
 		}
@@ -81,7 +81,7 @@ public abstract class AbstractUrlPool {
 			}
 		}
 		if (!dry) {
-			add(link);
+			add(link, state);
 		}
 		return true;
 	}
@@ -99,7 +99,7 @@ public abstract class AbstractUrlPool {
 
 	protected abstract CrawlState getNextUrl() throws InterruptedException;
 
-	protected abstract void add(CrawlState link);
+	protected abstract void add(CrawlState link, CrawlState parent);
 
 	protected abstract boolean hasNextUrl();
 
