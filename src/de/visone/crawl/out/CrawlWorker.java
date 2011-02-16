@@ -1,4 +1,4 @@
-package de.visone.crawl;
+package de.visone.crawl.out;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,8 +11,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.xml.stream.XMLStreamException;
 
-import de.visone.crawl.out.Content;
-import de.visone.crawl.out.XmlWriter;
+import de.visone.crawl.Settings;
 import de.visone.crawl.sys.Img;
 import de.visone.crawl.sys.Link;
 import de.visone.crawl.sys.Utils;

@@ -1,12 +1,15 @@
 package de.visone.crawl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import de.visone.crawl.gui.CrawlerDialog;
 import de.visone.crawl.gui.LinkCrawler;
+import de.visone.crawl.out.CrawlWorker;
 import de.visone.crawl.rules.RuleManager;
 import de.visone.crawl.sys.AbstractUrlPool;
 import de.visone.crawl.sys.DepthFstUrlPool;
@@ -17,13 +20,18 @@ import de.visone.crawl.xml.ProgressListener;
 
 public class CrawlerMain {
 
+	private static final String STD_IN = "-";
+
 	private static void usage() {
-		System.err.println("Usage: [-gui] <ruledir> <imgdir>");
+		System.err.println("Usage: [-gui] <ruledir> <imgdir> <in>");
 		System.err.println("-gui: opens a gui for crawling");
 		System.err.println("<ruledir>: The directory with the rules");
 		System.err
 				.println("<imgdir>: The directory where the images should be stored");
-		System.err.println("STD_IN: a list of URLs");
+		System.err.println("<in>: a file containing a list of URLs or '"
+				+ STD_IN + "'");
+		System.err.println("STD_IN: a list of URLs when <in> is '" + STD_IN
+				+ "'");
 		System.err.println("STD_ERR: error informations");
 		System.err.println("STD_OUT: an xml representation of the contents");
 		System.exit(1);
@@ -53,9 +61,12 @@ public class CrawlerMain {
 		}
 		final File ruledir = new File(arg(i++));
 		final File imgDir = new File(arg(i++));
+		final String in = arg(i++);
 		try {
+			final InputStream is = in.equals(STD_IN) ? System.in
+					: new FileInputStream(in);
 			final List<String> starts = new LinkedList<String>();
-			fillStarts(starts, new Scanner(System.in, Utils.UTF8));
+			fillStarts(starts, new Scanner(is, Utils.UTF8));
 			RuleManager.setBaseDir(ruledir);
 			final CrawlWorker cl = new CrawlWorker(System.out, imgDir);
 			if (gui) {
