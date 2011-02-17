@@ -232,6 +232,7 @@ public abstract class CrawlerDialog extends JDialog {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
 					showRuleEditor(true);
+					enableEdit();
 				}
 			});
 			rules.addItemListener(new ItemListener() {

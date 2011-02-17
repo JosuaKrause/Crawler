@@ -1,0 +1,12 @@
+[blacklist]
+regexp:http:///news.yahoo.com/video/.*
+
+[queries]
++ div class="yn-story-content"
++ div id="yn-story-secondary"
++ div class="photo"
++ div id="yn-story-main-media"
++ h1 id="yn-title"
+- style
+- script
+

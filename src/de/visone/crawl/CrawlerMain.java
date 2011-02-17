@@ -65,6 +65,9 @@ public class CrawlerMain {
 					: new FileInputStream(in);
 			final List<String> starts = new LinkedList<String>();
 			fillStarts(starts, new Scanner(is, Utils.UTF8));
+			if (starts.isEmpty() && gui) {
+				starts.add("");
+			}
 			RuleManager.setBaseDir(ruledir);
 			final CrawlWorker cl = new CrawlWorker(System.out, imgDir);
 			if (gui) {
