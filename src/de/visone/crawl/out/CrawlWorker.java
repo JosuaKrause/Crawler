@@ -46,7 +46,7 @@ public class CrawlWorker extends XmlWriter {
 		if (settings == null) {
 			settings = new Settings();
 			settings.domainSpecific = true;
-			settings.onlySameHost = true;
+			settings.onlySameHost = false;
 			settings.doLinks = true;
 			settings.doText = true;
 			settings.killLimit = 0;
