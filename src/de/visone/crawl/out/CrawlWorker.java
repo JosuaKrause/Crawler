@@ -51,7 +51,6 @@ public class CrawlWorker extends XmlWriter {
 			settings.doText = true;
 			settings.killLimit = 0;
 			settings.maxDepth = 5;
-			// TODO: configure settings
 		}
 		return settings;
 	}
@@ -150,7 +149,7 @@ public class CrawlWorker extends XmlWriter {
 			text.append(str);
 		}
 
-		void write() throws XMLStreamException {
+		void write() throws XMLStreamException, IOException {
 			xml.writeStartElement("page");
 			xml.writeAttribute("url", base.toString());
 			for (final Link link : links) {
@@ -169,8 +168,8 @@ public class CrawlWorker extends XmlWriter {
 			for (final Img img : imgs) {
 				xml.writeStartElement("img");
 				xml.writeAttribute("src", img.getSource().toString());
-				xml.writeAttribute("file", getFileForImg(img).getAbsolutePath()
-						.toString());
+				xml.writeAttribute("file", getFileForImg(img)
+						.getCanonicalFile().getAbsolutePath().toString());
 				for (final String s : img.getAlts()) {
 					if (s.isEmpty()) {
 						continue;
