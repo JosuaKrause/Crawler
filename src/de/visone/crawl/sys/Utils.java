@@ -3,12 +3,14 @@ package de.visone.crawl.sys;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.CRC32;
 
 import javax.swing.UIManager;
 
@@ -201,6 +203,17 @@ public class Utils {
 		}
 		ensureDir(dir.getParentFile());
 		dir.mkdir();
+	}
+
+	public static String getCRCHash(final String in) {
+		final CRC32 crc = new CRC32();
+		try {
+			crc.update(in.getBytes(UTF8));
+		} catch (final UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw new InternalError("Did not found " + UTF8);
+		}
+		return Long.toHexString(crc.getValue());
 	}
 
 	/**

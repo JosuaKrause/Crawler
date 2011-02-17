@@ -50,7 +50,7 @@ public class CrawlWorker extends XmlWriter {
 			settings.doLinks = true;
 			settings.doText = true;
 			settings.killLimit = 0;
-			settings.maxDepth = 5;
+			settings.maxDepth = 20;
 		}
 		return settings;
 	}

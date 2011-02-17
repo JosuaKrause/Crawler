@@ -1,0 +1,20 @@
+[blacklist]
+allow:.*(bild|fotostrecke).*
+regexp:.*
+allow:.*/images/.*\.(jpe?g|png|gif)
+
+[queries]
++ div id="spArticleColumn"
++ div id="spBigaLeft"
++ div id="spBigaRight"
+- ul class="spSocialBookmarkDe"
+- style
+- div class="spArticleCredit"
+- div class="spArticleBottomBox"
+- div class="spArticleFullsizeImgBackLink"
+- div id="spArticleFunctions"
+- div id="spSocialBookmark"
+- div class="spTop"
+- div class="spCredit"
+- script
+

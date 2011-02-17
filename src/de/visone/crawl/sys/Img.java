@@ -54,7 +54,7 @@ public class Img {
 	}
 
 	public String getHashedName() {
-		return Integer.toHexString(hashCode());
+		return Utils.getCRCHash(src.toString());
 	}
 
 	@Override
