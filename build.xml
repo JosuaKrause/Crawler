@@ -63,7 +63,7 @@
             <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
-   <target name="crawl">
+    <target name="crawl">
         <jar destfile="./crawler.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="de.visone.crawl.CrawlerMain"/>
