@@ -1,0 +1,17 @@
+[blacklist]
+regexp:http://i.cdn.turner.com/.*
+allow:http://i.cdn.turner.com/cnn/.*\.jpg
+regexp:.*/video/\?/video/.*
+
+[queries]
++ div class="cnn_strycntntlft"
+- style
+- p class="cnnEditorialNote"
+- p class="cnn_strycbftrtxt"
+- a href="javascript"
+- div class="cnn_strycaptiontxt"
+- div class="cnn_strybtntoolsbttm"
+- div class="cnn_strylftcntnt"
+- script
+- span
+

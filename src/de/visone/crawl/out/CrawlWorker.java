@@ -46,7 +46,7 @@ public class CrawlWorker extends XmlWriter {
 		if (settings == null) {
 			settings = new Settings();
 			settings.domainSpecific = true;
-			settings.onlySameHost = true;
+			settings.onlySameHost = false;
 			settings.doLinks = true;
 			settings.doText = true;
 			settings.killLimit = 0;
@@ -83,8 +83,8 @@ public class CrawlWorker extends XmlWriter {
 			if (dest.exists()) {
 				continue;
 			}
-			final BufferedImage img = ImageIO.read(Utils.createInputStream(i
-					.getSource(), set.userAgent));
+			final BufferedImage img = ImageIO.read(Utils.createInputStream(
+					i.getSource(), set.userAgent));
 			ImageIO.write(img, FORMAT, dest);
 			img.flush();
 		}
