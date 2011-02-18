@@ -170,6 +170,9 @@ public class CrawlWorker extends XmlWriter {
 
 		void write() throws XMLStreamException, IOException {
 			xml.writeStartElement("item");
+			if (guid != null) {
+				xml.writeAttribute("guid", guid);
+			}
 			xml.writeStartElement("fullhtml");
 			xml.writeStartElement("fulltext");
 			xml.writeAttribute("srcURL", base.toString());
