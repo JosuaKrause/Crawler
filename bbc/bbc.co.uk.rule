@@ -1,11 +1,11 @@
 [blacklist]
 http://bbcnewsupload.streamuk.com/
-allow:.*\.jpe?g
 regexp:.*
+allow:.*\.jpe?g
 allow:http://news.bbcimg.co.uk/media/images/.*\.gif
 
 [queries]
-+ div class="story-body"
++ div class="body"
 - style
 - form id="comment-form" enctype="application/x-www-form-urlencoded" action="http://www.bbc.co.uk/cgi-bin/cgiemail/email/newsv6/form.txt" method="get"
 - div class="embedded-hyper"
@@ -21,6 +21,20 @@ allow:http://news.bbcimg.co.uk/media/images/.*\.gif
 - div id="blq-mast"
 - div id="blq-nav"
 - div id="blq-foot"
+- div class="story-feature"
+- div class="videoInStoryC"
+- div class="warning"
+- div class="sportbanner"
+- div class="lhs"
+- div class="aznav"
+- div class="relatedbbcsites"
+- div class="ds"
+- div class="mvtb"
+- div id="socialBookMarks" class="sharesb"
+- div id="bbccom_storyprintsponsorship" class="bbccom_display_none"
+- div class="mvb"
+- div id="sportfooter"
+- td class="storyextra"
 - script
 - span class="story-date"
 
