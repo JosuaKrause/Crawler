@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.xml.stream.XMLStreamException;
@@ -24,6 +25,8 @@ public class CrawlWorker extends XmlWriter {
 
 	private final File imgDump;
 
+	private Map<URL, String> idMap;
+
 	private BlockContent cur;
 
 	private Object curParent;
@@ -35,6 +38,11 @@ public class CrawlWorker extends XmlWriter {
 		Utils.ensureDir(imgDump);
 		cur = null;
 		curParent = null;
+		idMap = null;
+	}
+
+	public void setIdMap(final Map<URL, String> idMap) {
+		this.idMap = idMap;
 	}
 
 	private Settings settings = null;
@@ -68,11 +76,19 @@ public class CrawlWorker extends XmlWriter {
 			}
 			xml.flush();
 			curParent = c;
-			cur = new BlockContent(c.getURL());
+			final URL u = c.getURL();
+			cur = new BlockContent(u, getId(u));
 		}
 		handleText(c.getText());
 		handleLinks(c.getAcceptedLinks());
 		handleImgs(c.getImages());
+	}
+
+	private String getId(final URL u) {
+		if (idMap == null) {
+			return null;
+		}
+		return idMap.get(u);
 	}
 
 	private void handleImgs(final Img[] imgs) throws IOException {
@@ -83,8 +99,8 @@ public class CrawlWorker extends XmlWriter {
 			if (dest.exists()) {
 				continue;
 			}
-			final BufferedImage img = ImageIO.read(Utils.createInputStream(
-					i.getSource(), set.userAgent));
+			final BufferedImage img = ImageIO.read(Utils.createInputStream(i
+					.getSource(), set.userAgent));
 			ImageIO.write(img, FORMAT, dest);
 			img.flush();
 		}
@@ -119,6 +135,8 @@ public class CrawlWorker extends XmlWriter {
 
 	private class BlockContent {
 
+		final String guid;
+
 		final List<Link> links;
 
 		final List<Img> imgs;
@@ -127,8 +145,9 @@ public class CrawlWorker extends XmlWriter {
 
 		final URL base;
 
-		BlockContent(final URL base) {
+		BlockContent(final URL base, final String guid) {
 			this.base = base;
+			this.guid = guid;
 			links = new LinkedList<Link>();
 			imgs = new LinkedList<Img>();
 			text = new StringBuilder();

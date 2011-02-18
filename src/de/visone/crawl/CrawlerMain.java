@@ -3,8 +3,11 @@ package de.visone.crawl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import de.visone.crawl.gui.CrawlerDialog;
@@ -64,12 +67,14 @@ public class CrawlerMain {
 			final InputStream is = in.equals(STD_IN) ? System.in
 					: new FileInputStream(in);
 			final List<String> starts = new LinkedList<String>();
-			fillStarts(starts, new Scanner(is, Utils.UTF8));
+			final Map<URL, String> idMap = new HashMap<URL, String>();
+			fillStarts(starts, idMap, new Scanner(is, Utils.UTF8));
 			if (starts.isEmpty() && gui) {
 				starts.add("");
 			}
 			RuleManager.setBaseDir(ruledir);
 			final CrawlWorker cl = new CrawlWorker(System.out, imgDir);
+			cl.setIdMap(idMap);
 			if (gui) {
 				final String start = starts.get(0);
 				final CrawlerDialog cd = new LinkCrawler(null,
@@ -104,13 +109,19 @@ public class CrawlerMain {
 		}
 	}
 
-	private static void fillStarts(final List<String> starts, final Scanner s) {
+	private static void fillStarts(final List<String> starts,
+			final Map<URL, String> idMap, final Scanner s) {
 		while (s.hasNextLine()) {
 			final String line = s.nextLine().trim();
 			if (line.isEmpty()) {
 				continue;
 			}
-			starts.add(line);
+			final String[] parts = line.split(" ", 2);
+			final String u = parts[0].trim();
+			starts.add(u);
+			if (parts.length > 1) {
+				idMap.put(Utils.getURL(u), parts[1].trim());
+			}
 		}
 		s.close();
 	}
