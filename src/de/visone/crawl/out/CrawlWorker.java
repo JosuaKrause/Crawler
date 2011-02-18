@@ -150,8 +150,10 @@ public class CrawlWorker extends XmlWriter {
 		}
 
 		void write() throws XMLStreamException, IOException {
-			xml.writeStartElement("page");
-			xml.writeAttribute("url", base.toString());
+			xml.writeStartElement("item");
+			xml.writeStartElement("fullhtml");
+			xml.writeAttribute("srcURL", base.toString());
+			xml.writeStartElement("childs");
 			for (final Link link : links) {
 				xml.writeStartElement("child");
 				xml.writeAttribute("url", link.getUrl().toString());
@@ -165,10 +167,15 @@ public class CrawlWorker extends XmlWriter {
 				}
 				xml.writeEndElement();
 			}
+			xml.writeEndElement();
+			xml.writeStartElement("fulltext");
+			xml.writeCData(text.toString().trim());
+			xml.writeEndElement();
+			xml.writeStartElement("images");
 			for (final Img img : imgs) {
 				xml.writeStartElement("img");
-				xml.writeAttribute("src", img.getSource().toString());
-				xml.writeAttribute("file", getFileForImg(img)
+				xml.writeAttribute("srcURL", img.getSource().toString());
+				xml.writeAttribute("localPath", getFileForImg(img)
 						.getCanonicalFile().getAbsolutePath().toString());
 				for (final String s : img.getAlts()) {
 					if (s.isEmpty()) {
@@ -184,8 +191,7 @@ public class CrawlWorker extends XmlWriter {
 				}
 				xml.writeEndElement();
 			}
-			xml.writeStartElement("content");
-			xml.writeCData(text.toString().trim());
+			xml.writeEndElement();
 			xml.writeEndElement();
 			xml.writeEndElement();
 		}
