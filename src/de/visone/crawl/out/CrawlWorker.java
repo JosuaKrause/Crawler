@@ -152,23 +152,8 @@ public class CrawlWorker extends XmlWriter {
 		void write() throws XMLStreamException, IOException {
 			xml.writeStartElement("item");
 			xml.writeStartElement("fullhtml");
-			xml.writeAttribute("srcURL", base.toString());
-			xml.writeStartElement("childs");
-			for (final Link link : links) {
-				xml.writeStartElement("child");
-				xml.writeAttribute("url", link.getUrl().toString());
-				for (final String s : link.getText()) {
-					if (s.isEmpty()) {
-						continue;
-					}
-					xml.writeStartElement("text");
-					xml.writeCData(s);
-					xml.writeEndElement();
-				}
-				xml.writeEndElement();
-			}
-			xml.writeEndElement();
 			xml.writeStartElement("fulltext");
+			xml.writeAttribute("srcURL", base.toString());
 			xml.writeCData(text.toString().trim());
 			xml.writeEndElement();
 			xml.writeStartElement("images");
@@ -177,6 +162,7 @@ public class CrawlWorker extends XmlWriter {
 				xml.writeAttribute("srcURL", img.getSource().toString());
 				xml.writeAttribute("localPath", getFileForImg(img)
 						.getCanonicalFile().getAbsolutePath().toString());
+				xml.writeStartElement("alts");
 				for (final String s : img.getAlts()) {
 					if (s.isEmpty()) {
 						continue;
@@ -185,10 +171,30 @@ public class CrawlWorker extends XmlWriter {
 					xml.writeCData(s);
 					xml.writeEndElement();
 				}
+				xml.writeEndElement();
+				xml.writeStartElement("referers");
 				for (final URL u : img.getParents()) {
 					xml.writeEmptyElement("referer");
 					xml.writeAttribute("url", u.toString());
 				}
+				xml.writeEndElement();
+				xml.writeEndElement();
+			}
+			xml.writeEndElement();
+			xml.writeStartElement("childs");
+			for (final Link link : links) {
+				xml.writeStartElement("child");
+				xml.writeAttribute("url", link.getUrl().toString());
+				xml.writeStartElement("linktexts");
+				for (final String s : link.getText()) {
+					if (s.isEmpty()) {
+						continue;
+					}
+					xml.writeStartElement("linktext");
+					xml.writeCData(s);
+					xml.writeEndElement();
+				}
+				xml.writeEndElement();
 				xml.writeEndElement();
 			}
 			xml.writeEndElement();
