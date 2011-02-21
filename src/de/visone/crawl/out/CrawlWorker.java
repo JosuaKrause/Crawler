@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class CrawlWorker extends XmlWriter {
 
 	private final File imgDump;
 
+	private final File baseDump;
+
 	private Map<URL, String> idMap;
 
 	private BlockContent cur;
@@ -34,6 +37,7 @@ public class CrawlWorker extends XmlWriter {
 	public CrawlWorker(final OutputStream out, final File dump)
 			throws IOException {
 		super(out, "results");
+		baseDump = dump;
 		imgDump = new File(dump, "imgs/");
 		Utils.ensureDir(imgDump);
 		cur = null;
@@ -120,6 +124,11 @@ public class CrawlWorker extends XmlWriter {
 		return new File(imgDump, i.getHashedName() + IMG_EXT);
 	}
 
+	private String getPathForImg(final Img i) {
+		final File img = getFileForImg(i);
+		return getRelativePath(baseDump, img);
+	}
+
 	@Override
 	public void close() throws IOException {
 		if (cur != null) {
@@ -182,8 +191,7 @@ public class CrawlWorker extends XmlWriter {
 			for (final Img img : imgs) {
 				xml.writeStartElement("img");
 				xml.writeAttribute("srcURL", img.getSource().toString());
-				xml.writeAttribute("localPath", getFileForImg(img)
-						.getCanonicalFile().getAbsolutePath().toString());
+				xml.writeAttribute("localPath", getPathForImg(img));
 				xml.writeStartElement("alts");
 				for (final String s : img.getAlts()) {
 					if (s.isEmpty()) {
@@ -224,4 +232,98 @@ public class CrawlWorker extends XmlWriter {
 			xml.writeEndElement();
 		}
 	}
+
+	/**
+	 * Breaks a path down into individual elements and adds it to a list.
+	 * Example: if a path is /a/b/c/d.txt, the breakdown will be [d.txt,c,b,a]
+	 * 
+	 * @param f
+	 *            input file
+	 * @return a List collection with the individual elements of the path in
+	 *         reverse order
+	 * @author David M. Howard
+	 */
+	private static List<String> getPathList(final File f) {
+		List<String> l = new ArrayList<String>();
+		File r;
+		try {
+			r = f.getCanonicalFile();
+			while (r != null) {
+				l.add(r.getName());
+				r = r.getParentFile();
+			}
+		} catch (final IOException e) {
+			e.printStackTrace();
+			l = null;
+		}
+		return l;
+	}
+
+	/**
+	 * figure out a string representing the relative path of 'f' with respect to
+	 * 'r'
+	 * 
+	 * @param r
+	 *            home path
+	 * @param f
+	 *            path of file
+	 * @author David M. Howard
+	 */
+	private static String matchPathLists(final List<String> r,
+			final List<String> f) {
+		int i;
+		int j;
+		String s;
+		// start at the beginning of the lists
+		// iterate while both lists are equal
+		s = "";
+		i = r.size() - 1;
+		j = f.size() - 1;
+
+		// first eliminate common root
+		while ((i >= 0) && (j >= 0) && (r.get(i).equals(f.get(j)))) {
+			i--;
+			j--;
+		}
+
+		// for each remaining level in the home path, add a ..
+		for (; i >= 0; i--) {
+			s += ".." + File.separator;
+		}
+
+		// for each level in the file path, add the path
+		for (; j >= 1; j--) {
+			s += f.get(j) + File.separator;
+		}
+
+		// file name
+		s += f.get(j);
+		return s;
+	}
+
+	/**
+	 * get relative path of File 'f' with respect to 'home' directory. example:
+	 * home = /a/b/c f = /a/d/e/x.txt s = getRelativePath(home,f) =
+	 * ../../d/e/x.txt
+	 * 
+	 * @param home
+	 *            base path, should be a directory, not a file, or it doesn't
+	 *            make sense
+	 * @param f
+	 *            file to generate path for
+	 * @return path from home to f as a string
+	 * @author David M. Howard
+	 */
+	public static String getRelativePath(final File home, final File f) {
+		List<String> homelist;
+		List<String> filelist;
+		String s;
+
+		homelist = getPathList(home);
+		filelist = getPathList(f);
+		s = matchPathLists(homelist, filelist);
+
+		return s;
+	}
+
 }
