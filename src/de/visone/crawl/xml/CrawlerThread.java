@@ -124,6 +124,7 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 		}
 	}
 
+	@Override
 	public void cancelAction() {
 		if (progress != null) {
 			progress = null;

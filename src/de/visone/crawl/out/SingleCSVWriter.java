@@ -1,11 +1,10 @@
 package de.visone.crawl.out;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-public abstract class SingleCSVWriter implements CrawlListener, Closeable {
+public abstract class SingleCSVWriter implements CrawlListener {
 
 	public static String COMMA = ";";
 
