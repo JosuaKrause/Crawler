@@ -139,6 +139,9 @@ public class NoTextTexterImpl implements Texter {
 	@Override
 	public void img(final URL img, final String text,
 			final AbstractUrlPool pool, final CrawlState state) {
+		if (images == null) {
+			return;
+		}
 		if (!acceptLink()) {
 			return;
 		}
