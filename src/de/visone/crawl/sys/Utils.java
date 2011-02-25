@@ -95,6 +95,25 @@ public class Utils {
 		return getURL(url, (URL) null);
 	}
 
+	/** Whether to remove everything after a '#' in URLs. */
+	private static boolean stripOffHashSigns = true;
+
+	/**
+	 * @param s
+	 *            Sets whether to remove everything after a '#' in URLs. The
+	 *            default is <code>true</code>.
+	 */
+	public static void setStripOffHashSigns(final boolean s) {
+		stripOffHashSigns = s;
+	}
+
+	/**
+	 * @return Whether everything after a '#' will be removed in URLs.
+	 */
+	public static boolean doStripOffHashSigns() {
+		return stripOffHashSigns;
+	}
+
 	/**
 	 * @param url
 	 *            The URL.
@@ -112,8 +131,10 @@ public class Utils {
 						+ (url.startsWith("/") ? url : path + "/" + url);
 			}
 		}
-		final int i = url.indexOf('#');
-		url = (i <= 0) ? url : url.substring(0, i);
+		if (stripOffHashSigns) {
+			final int i = url.indexOf('#');
+			url = (i <= 0) ? url : url.substring(0, i);
+		}
 		url = url.replace(" ", "%20");
 		try {
 			final URL u = new URL(url);
