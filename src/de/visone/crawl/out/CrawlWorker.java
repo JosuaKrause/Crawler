@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,9 @@ import de.visone.crawl.sys.Link;
 import de.visone.crawl.sys.Utils;
 
 public class CrawlWorker extends XmlWriter {
+
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd");
 
 	private static final String IMG_EXT = ".jpg";
 
@@ -38,7 +43,7 @@ public class CrawlWorker extends XmlWriter {
 			throws IOException {
 		super(out, "results");
 		baseDump = dump;
-		imgDump = new File(dump, "imgs/");
+		imgDump = new File(dump, "imgs/" + DATE_FORMAT.format(new Date()) + "/");
 		Utils.ensureDir(imgDump);
 		cur = null;
 		curParent = null;
