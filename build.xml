@@ -13,7 +13,7 @@
         		<exclude name="de/visone/crawl/google/**"/>
         		<exclude name="de/visone/crawl/wiki/**"/>
         	</fileset>
-            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
 	<target name="link">
@@ -29,7 +29,7 @@
         		<exclude name="de/visone/crawl/google/**"/>
         		<exclude name="de/visone/crawl/wiki/**"/>
             </fileset>
-            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
 	</target>
 	<target name="google">
@@ -45,7 +45,7 @@
             	<exclude name="de/visone/crawl/LinkMain.class"/>
             	<exclude name="de/visone/crawl/wiki/**"/>
             </fileset>
-            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
 	<target name="wiki">
@@ -60,7 +60,7 @@
                 <exclude name="de/visone/crawl/LinkMain.class"/>
             	<exclude name="de/visone/crawl/google/**"/>
             </fileset>
-            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
     <target name="crawl">
@@ -72,7 +72,7 @@
             <fileset dir="./bin">
                 <exclude name="de/visone/crawl/google/**"/>
             </fileset>
-            <zipfileset excludes="META-INF/*.SF" src="./tagsoup-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
 	<target name="all" depends="crawl" />
