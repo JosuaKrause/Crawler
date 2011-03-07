@@ -1,0 +1,18 @@
+[blacklist]
+regexp:http://edition.cnn.com.*
+regexp:http://www.ft.com.*
+regexp:http://i.cdn.turner.com/cnn/.element.*
+
+[queries]
++ div class="cnn_storyarea"
+- style
+- div id="cnn_hdr"
+- div id="cnnShareThisContent"
+- div class="cnn_strylctcntr"
+- div class="cnn_strybtmcntnt"
+- div class="cnn_strycntntrgt"
+- div id="cnn_ftrcntntinner" class="clearfix"
+- div class="cnn_stryathrtmp"
+- div class="cnn_strylftcntnt"
+- script
+

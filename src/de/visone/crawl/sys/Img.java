@@ -50,7 +50,7 @@ public class Img {
 		if (a == null) {
 			return;
 		}
-		alt.add(a);
+		alt.add(a.trim());
 	}
 
 	public String getHashedName() {

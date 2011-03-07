@@ -37,13 +37,13 @@ public class SaxParser extends DefaultHandler {
 		if (qName.equals("a")) {
 			final String href = attributes.getValue("href");
 			if (href != null) {
-				link = Utils.getURL(href, state.getURL());
+				link = Utils.getURL(href.trim(), state.getURL());
 				linkText = new StringBuilder();
 			}
 		} else if (qName.equals("img")) {
 			final String src = attributes.getValue("src");
 			if (src != null) {
-				final URL link = Utils.getURL(src, state.getURL());
+				final URL link = Utils.getURL(src.trim(), state.getURL());
 				t.img(link, attributes.getValue("alt"), pool, state);
 			}
 		}
