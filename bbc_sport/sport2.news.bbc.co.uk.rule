@@ -1,0 +1,22 @@
+[blacklist]
+allow:http://news.bbcimg.co.uk/media/images/.*
+regexp:.*
+
+[queries]
++ body
+- style
+- div class="sportbanner"
+- div class="blq-rst"
+- div class="warning"
+- div class="shares"
+- div class="mvtb"
+- div class="bbccom_display_none"
+- div id="sportfooter"
+- td class="sidebar1"
+- td class="storyextra"
+- td class="sibStd"
+- td class="sibtbgf"
+- table class="datetools"
+- script
+- div class="bbccom_visibility_hidden"
+

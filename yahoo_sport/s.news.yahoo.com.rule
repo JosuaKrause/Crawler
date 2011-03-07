@@ -1,0 +1,23 @@
+[blacklist]
+allow:http://d.yimg.com/a/p/a.*p/.*
+regexp:.*
+
+[queries]
++ body
+- cite class="vcard"
+- style
+- a class="shortcut" shape="rect" href="#navigation"
+- a class="shortcut" shape="rect" href="#bd"
+- div id="hd"
+- div class="blue"
+- div class="yn-share-social"
+- div class="yibs-carousel"
+- div class="related-conten"
+- div id="ygs-comments"
+- div id="sidebar" class="yui-b" role="complementary"
+- div class="yui-gb"
+- div id="ft"
+- div id="copyright" class="mod" role="contentinfo"
+- div id="copyright"
+- script
+
