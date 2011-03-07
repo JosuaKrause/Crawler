@@ -5,6 +5,7 @@ import static de.visone.crawl.gui.editor.LinkViewer.mix;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -19,6 +20,7 @@ import de.visone.crawl.rules.BlacklistFilter;
 import de.visone.crawl.rules.HtmlQuery;
 import de.visone.crawl.rules.ImageRepresentation;
 import de.visone.crawl.rules.LinkRepresentation;
+import de.visone.crawl.sys.Img;
 
 public class ImageViewer extends JTable implements RuleListener {
 
@@ -56,6 +58,7 @@ public class ImageViewer extends JTable implements RuleListener {
 			}
 			return this;
 		}
+
 	}
 
 	private class ImageModel extends AbstractTableModel {
@@ -98,6 +101,7 @@ public class ImageViewer extends JTable implements RuleListener {
 
 	public ImageViewer(final Node root, final QueryManager mng) {
 		this.root = root;
+		setToolTipText("");
 		lrp = new ImageRepresentation(root);
 		setModel(model = new ImageModel());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -143,4 +147,15 @@ public class ImageViewer extends JTable implements RuleListener {
 		query = q;
 		changedRule();
 	}
+
+	@Override
+	public String getToolTipText(final MouseEvent event) {
+		final int row = rowAtPoint(event.getPoint());
+		if (lrp.size() <= row || row < 0) {
+			return getToolTipText();
+		}
+		final Img img = lrp.getImage(row);
+		return "<html><img src=\"" + img.getSource().toString() + "\">";
+	}
+
 }

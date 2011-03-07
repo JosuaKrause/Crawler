@@ -51,6 +51,12 @@ public class Settings {
 	 */
 	public long meanDelay = 1000;
 
+	// TODO: implement it
+	public long forcedTimeoutAfter = 20000;
+
+	// TODO: implement it
+	public int maxRetries = 3;
+
 	/**
 	 * The standard HTML-Query to filter links and text. The default query takes
 	 * everything below the <code>&lt;body&gt;</code> node and ignores script-
