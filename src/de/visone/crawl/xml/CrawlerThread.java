@@ -86,10 +86,11 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 			while (!isInterrupted() && pool.hasNext()) {
 				final CrawlState state = pool.getNext();
 				if (state != null) {
+					boolean success = false;
 					try {
 						crawl(state);
 						listener.pageCrawled(state.getTexter());
-						state.dispose();
+						success = true;
 					} catch (final Exception e) {
 						errorFlag = e;
 						if (!haltOnError) {
@@ -103,6 +104,9 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 							}
 						}
 						pool.addAgain(state);
+					}
+					if (success) {
+						state.dispose();
 					}
 				}
 				if (haltOnError && errorFlag != null) {
