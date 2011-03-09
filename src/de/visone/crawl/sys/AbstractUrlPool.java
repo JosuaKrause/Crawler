@@ -135,7 +135,7 @@ public abstract class AbstractUrlPool {
 
 	/**
 	 * Adds a previously added state back to the list if it is allowed by the
-	 * settings.
+	 * settings. Otherwise the state gets disposed.
 	 * 
 	 * @param link
 	 *            The link.
@@ -144,6 +144,8 @@ public abstract class AbstractUrlPool {
 		if (link.mayTryAgain(maxRetries)) {
 			link.tryAgain();
 			add(link, link.getParent());
+		} else {
+			link.dispose();
 		}
 	}
 

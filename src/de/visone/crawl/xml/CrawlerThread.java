@@ -25,13 +25,15 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 
 	private final int coolDown;
 
+	private final long forcedTimeout;
+
 	private ProgressListener progress;
 
 	private volatile int level;
 
 	private volatile boolean hasFinished;
 
-	private Exception errorFlag;
+	private volatile Exception errorFlag;
 
 	private String lastURL;
 
@@ -48,6 +50,7 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 		hasFinished = false;
 		haltOnError = s.haltOnError;
 		coolDown = s.coolDown;
+		forcedTimeout = s.forcedTimeoutAfter;
 		errorFlag = null;
 		lastURL = null;
 	}
@@ -79,6 +82,8 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 		Utils.crawl(state, pool, userAgent);
 	}
 
+	private volatile boolean success = false;
+
 	@Override
 	public void run() {
 		fresh = false;
@@ -86,15 +91,33 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 			while (!isInterrupted() && pool.hasNext()) {
 				final CrawlState state = pool.getNext();
 				if (state != null) {
-					boolean success = false;
-					try {
-						crawl(state);
-						listener.pageCrawled(state.getTexter());
-						success = true;
-					} catch (final Exception e) {
-						errorFlag = e;
+					success = false;
+					final Thread crawl = new Thread() {
+						@Override
+						public void run() {
+							try {
+								crawl(state);
+								listener.pageCrawled(state.getTexter());
+								success = true;
+							} catch (final Exception e) {
+								errorFlag = e;
+							}
+						}
+					};
+					crawl.start();
+					crawl.join(forcedTimeout);
+					if (success) {
+						state.dispose();
+					} else {
+						if (crawl.isAlive()) {
+							crawl.interrupt();
+							System.err.println("Forced Time-Out after "
+									+ forcedTimeout + "ms!");
+						}
 						if (!haltOnError) {
-							e.printStackTrace();
+							if (errorFlag != null) {
+								errorFlag.printStackTrace();
+							}
 							if (coolDown > 0) {
 								synchronized (this) {
 									System.err.println("cooling down "
@@ -104,9 +127,6 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 							}
 						}
 						pool.addAgain(state);
-					}
-					if (success) {
-						state.dispose();
 					}
 				}
 				if (haltOnError && errorFlag != null) {
