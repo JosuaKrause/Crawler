@@ -73,8 +73,8 @@ public class Crawler {
 				public boolean shouldAccept(final URI uri,
 						final HttpCookie cookie) {
 					return uri.getHost().equals(ustart.getHost())
-							&& HttpCookie.domainMatches(cookie.getDomain(), uri
-									.getHost());
+							&& HttpCookie.domainMatches(cookie.getDomain(),
+									uri.getHost());
 				}
 			};
 			CookieHandler.setDefault(new CookieManager(null, cp));
@@ -93,7 +93,8 @@ public class Crawler {
 	}
 
 	protected AbstractUrlPool createUrlPool(final Settings set) {
-		return new UrlPool(set.meanDelay, new TexterFactory(set), set.killLimit);
+		return new UrlPool(set.meanDelay, new TexterFactory(set),
+				set.killLimit, set.maxRetries);
 	}
 
 	/**

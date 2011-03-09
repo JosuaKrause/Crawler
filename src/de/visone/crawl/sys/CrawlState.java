@@ -16,6 +16,10 @@ public class CrawlState implements Comparable<CrawlState> {
 
 	private Attributes curAttr;
 
+	private int numberOfTries;
+
+	private CrawlState parent;
+
 	public CrawlState(final URL url, final int depth, final Texter texter) {
 		if (url == null) {
 			throw new NullPointerException("url");
@@ -24,6 +28,16 @@ public class CrawlState implements Comparable<CrawlState> {
 		this.texter = texter;
 		base = url;
 		curAttr = null;
+		numberOfTries = 0;
+		parent = null;
+	}
+
+	public boolean mayTryAgain(final int maxRetries) {
+		return numberOfTries < maxRetries;
+	}
+
+	public void tryAgain() {
+		++numberOfTries;
 	}
 
 	public int getDepth() {
@@ -44,6 +58,17 @@ public class CrawlState implements Comparable<CrawlState> {
 
 	public Attributes getAttributes() {
 		return curAttr;
+	}
+
+	public void setParent(final CrawlState par) {
+		if (par == this) {
+			throw new IllegalArgumentException("self reference");
+		}
+		parent = par;
+	}
+
+	public CrawlState getParent() {
+		return parent;
 	}
 
 	@Override
@@ -72,6 +97,7 @@ public class CrawlState implements Comparable<CrawlState> {
 	}
 
 	public void dispose() {
+		parent = null;
 		curAttr = null;
 		if (texter != null) {
 			texter.dispose();

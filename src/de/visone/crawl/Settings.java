@@ -47,14 +47,23 @@ public class Settings {
 	/**
 	 * The mean delay between two network requests in milliseconds. The actual
 	 * time is chosen randomly. The default value is <code>1000</code> or 1
-	 * second.
+	 * second. If the delay is {@code 0} no pause is made between two network
+	 * requests.
 	 */
 	public long meanDelay = 1000;
 
-	// TODO: implement it
-	public long forcedTimeoutAfter = 20000;
+	/**
+	 * The time the processing may proceed, before the system forces the page to
+	 * be stopped crawling and goes on with the next page, in seconds. The
+	 * default value is {@code 60000ms} or 1 minute. If the timeout is {@code 0}
+	 * the crawling will never be interrupted.
+	 */
+	public long forcedTimeoutAfter = 60000;
 
-	// TODO: implement it
+	/**
+	 * The maximum number of attempts before a site is called uncrawlable and is
+	 * ignored. The default value is 3.
+	 */
 	public int maxRetries = 3;
 
 	/**

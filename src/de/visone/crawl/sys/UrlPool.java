@@ -20,8 +20,8 @@ public class UrlPool extends AbstractUrlPool {
 	private final Set<CrawlState> done;
 
 	public UrlPool(final long meanDelay, final TexterFactory factory,
-			final int killLimit) {
-		super(factory, meanDelay, killLimit);
+			final int killLimit, final int maxRetries) {
+		super(factory, meanDelay, killLimit, maxRetries);
 		urls = new TreeSet<CrawlState>();
 		done = new HashSet<CrawlState>();
 		depth = new HashMap<Integer, Integer>();
@@ -29,7 +29,7 @@ public class UrlPool extends AbstractUrlPool {
 	}
 
 	public UrlPool() {
-		this(0, new TexterFactory(new Settings()), 0);
+		this(0, new TexterFactory(new Settings()), 0, 0);
 	}
 
 	private void inc(final int d) {

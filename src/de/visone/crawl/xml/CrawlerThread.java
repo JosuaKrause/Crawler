@@ -102,6 +102,7 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 								}
 							}
 						}
+						pool.addAgain(state);
 					}
 				}
 				if (haltOnError && errorFlag != null) {

@@ -89,7 +89,7 @@ public class CrawlerMain {
 					@Override
 					protected AbstractUrlPool createUrlPool(final Settings set) {
 						return new DepthFstUrlPool(new TexterFactory(set),
-								set.meanDelay, set.killLimit);
+								set.meanDelay, set.killLimit, set.maxRetries);
 					}
 				};
 				// final ProgressListener pl = new ProgressAdapter() {

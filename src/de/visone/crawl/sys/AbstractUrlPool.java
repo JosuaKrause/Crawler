@@ -22,17 +22,20 @@ public abstract class AbstractUrlPool {
 
 	private final int killLimit;
 
-	private int soFar;
-
 	private final Map<String, BlacklistFilter> filter;
+
+	private final int maxRetries;
+
+	private int soFar;
 
 	protected final TexterFactory texter;
 
 	public AbstractUrlPool(final TexterFactory texter, final long meanDelay,
-			final int killLimit) {
+			final int killLimit, final int maxRetries) {
 		this.meanDelay = meanDelay / 2;
 		this.killLimit = killLimit;
 		this.texter = texter;
+		this.maxRetries = maxRetries;
 		filter = new HashMap<String, BlacklistFilter>();
 		accepter = new ArrayList<LinkAccepter>();
 		soFar = 0;
@@ -57,8 +60,8 @@ public abstract class AbstractUrlPool {
 		if (texter.isDomainSpecific()) {
 			final String rule = RuleManager.getRuleForURL(url);
 			if (rule != null && !filter.containsKey(rule)) {
-				RuleManager.addDomainSpecific(rule, filter, texter
-						.getDSQueries());
+				RuleManager.addDomainSpecific(rule, filter,
+						texter.getDSQueries());
 				addAccepter(filter.get(rule));
 			}
 		}
@@ -129,6 +132,20 @@ public abstract class AbstractUrlPool {
 	 *            be <code>null</code>.
 	 */
 	protected abstract void add(CrawlState link, CrawlState parent);
+
+	/**
+	 * Adds a previously added state back to the list if it is allowed by the
+	 * settings.
+	 * 
+	 * @param link
+	 *            The link.
+	 */
+	public void addAgain(final CrawlState link) {
+		if (link.mayTryAgain(maxRetries)) {
+			link.tryAgain();
+			add(link, link.getParent());
+		}
+	}
 
 	/**
 	 * @return Whether there is a next URL to crawl.

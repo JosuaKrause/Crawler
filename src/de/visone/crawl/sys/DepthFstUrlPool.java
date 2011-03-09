@@ -22,8 +22,8 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 	private Texter current;
 
 	public DepthFstUrlPool(final TexterFactory texter, final long meanDelay,
-			final int killLimit) {
-		super(texter, meanDelay, killLimit);
+			final int killLimit, final int maxRetries) {
+		super(texter, meanDelay, killLimit, maxRetries);
 		parentMap = new HashMap<CrawlState, Texter>();
 		urls = new HashMap<Texter, Queue<CrawlState>>();
 		already = new HashMap<Texter, Set<URL>>();
@@ -48,6 +48,7 @@ public class DepthFstUrlPool extends AbstractUrlPool {
 		if (parent == null) {
 			parentMap.put(link, link.getTexter());
 		} else {
+			link.setParent(parent);
 			final Texter p = parentMap.get(parent);
 			t.setParent(p);
 			parentMap.put(link, p != null ? p : t);
