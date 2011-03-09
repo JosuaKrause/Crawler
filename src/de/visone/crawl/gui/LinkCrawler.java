@@ -28,6 +28,12 @@ public class LinkCrawler extends CrawlerDialog {
 	private final JSpinner coolDown = new JSpinner(new SpinnerNumberModel(5000,
 			0, 20000, 100));
 
+	private final JSpinner forcedTimeout = new JSpinner(new SpinnerNumberModel(
+			60, 0, 600, 10));
+
+	private final JSpinner maxRetries = new JSpinner(new SpinnerNumberModel(3,
+			0, 10, 1));
+
 	private final JSpinner limit = new JSpinner(new SpinnerNumberModel(0, 0,
 			100000, 100));
 
@@ -50,6 +56,8 @@ public class LinkCrawler extends CrawlerDialog {
 		s.readNoFollow = readNoFollow.isSelected();
 		s.maxDepth = (Integer) maxDepth.getModel().getValue();
 		s.killLimit = (Integer) limit.getModel().getValue();
+		s.maxRetries = (Integer) maxRetries.getModel().getValue();
+		s.forcedTimeoutAfter = (Integer) forcedTimeout.getModel().getValue() * 1000L;
 		return s;
 	}
 
@@ -57,6 +65,8 @@ public class LinkCrawler extends CrawlerDialog {
 	protected void addCustomizedOptions() {
 		addOption("Mean delay:", meanDelay, new JLabel(" ms"));
 		addOption("Cool down:", coolDown, new JLabel(" ms"));
+		addOption("Forced time-out after:", forcedTimeout, new JLabel(" s"));
+		addOption("Max retries:", maxRetries);
 		addOption("Max depth:", maxDepth);
 		addOption("Page limit:", limit);
 		readNoFollow.setSelected(true);
