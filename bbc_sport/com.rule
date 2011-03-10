@@ -1,0 +1,5 @@
+[blacklist]
+regexp:.*
+
+[queries]
+- html
