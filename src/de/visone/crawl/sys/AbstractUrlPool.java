@@ -144,6 +144,7 @@ public abstract class AbstractUrlPool {
 		if (link.mayTryAgain(maxRetries)) {
 			link.tryAgain();
 			add(link, link.getParent());
+			System.err.println("retrying " + link.getURL().toString());
 		} else {
 			link.dispose();
 		}
