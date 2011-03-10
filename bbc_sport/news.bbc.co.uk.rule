@@ -1,10 +1,13 @@
 [blacklist]
-allow:http://news.bbcimg.co.uk/media/images/.*
+gif
 regexp:.*
+allow:http://news.bbcimg.co.uk/media/images/.*
 
 [queries]
 + body
 - style
+- a class="skip" shape="rect"
+- p class="published"
 - div class="sportbanner"
 - div class="blq-rst"
 - div class="warning"
@@ -12,11 +15,30 @@ regexp:.*
 - div class="mvtb"
 - div class="bbccom_display_none"
 - div id="sportfooter"
+- div class="bbccom_visibility_hidden"
+- div id="header-wrapper"
+- div class="share-help"
+- div class="story-related"
+- div class="top-index-stories"
+- div class="layout-block-b"
+- div class="footer"
+- div class="lhs"
+- div class="fpfeed"
+- div class="aznav"
+- div class="relatedbbcsites"
+- div id="banner"
+- div class="story-actions"
+- div id="secondary-content" class="content-group"
+- div id="navigation"
+- div class="service"
+- div class="see-also"
+- div class="short_table"
+- div class="barstats"
 - td class="sidebar1"
 - td class="storyextra"
 - td class="sibStd"
 - td class="sibtbgf"
 - table class="datetools"
 - script
-- div class="bbccom_visibility_hidden"
+- span class="story-date"
 
