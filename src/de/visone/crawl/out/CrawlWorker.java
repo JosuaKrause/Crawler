@@ -68,6 +68,11 @@ public class CrawlWorker extends XmlWriter {
 			settings.doText = true;
 			settings.killLimit = 0;
 			settings.maxDepth = 20;
+			settings.coolDown = 5000;
+			settings.forcedTimeoutAfter = 10 * 60000;
+			settings.maxRetries = 0;
+			settings.haltOnError = false;
+			settings.readNoFollow = true;
 		}
 		return settings;
 	}
@@ -108,8 +113,8 @@ public class CrawlWorker extends XmlWriter {
 			if (dest.exists()) {
 				continue;
 			}
-			final BufferedImage img = ImageIO.read(Utils.createInputStream(i
-					.getSource(), set.userAgent));
+			final BufferedImage img = ImageIO.read(Utils.createInputStream(
+					i.getSource(), set.userAgent));
 			ImageIO.write(img, FORMAT, dest);
 			img.flush();
 		}

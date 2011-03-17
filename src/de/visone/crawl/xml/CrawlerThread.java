@@ -97,7 +97,6 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 						public void run() {
 							try {
 								crawl(state);
-								listener.pageCrawled(state.getTexter());
 								success = true;
 							} catch (final Exception e) {
 								errorFlag = e;
@@ -107,6 +106,7 @@ public class CrawlerThread extends Thread implements ProgressProducer {
 					crawl.start();
 					crawl.join(forcedTimeout);
 					if (success) {
+						listener.pageCrawled(state.getTexter());
 						state.dispose();
 					} else {
 						if (crawl.isAlive()) {
