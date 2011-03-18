@@ -33,7 +33,17 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 	 *            The content String.
 	 */
 	public ContentReader(final String content) {
-		in = new Scanner(content);
+		this(new Scanner(content));
+	}
+
+	/**
+	 * General purpose constructor.
+	 * 
+	 * @param scanner
+	 *            The scanner to use.
+	 */
+	public ContentReader(final Scanner scanner) {
+		in = scanner;
 		last = null;
 		lastSpace = 0;
 		pushedBack = false;
@@ -123,6 +133,7 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 	protected void finalize() throws Throwable {
 		if (in != null) {
 			in.close();
+			in = null;
 		}
 		super.finalize();
 	}
