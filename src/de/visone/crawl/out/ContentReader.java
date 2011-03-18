@@ -1,19 +1,21 @@
 package de.visone.crawl.out;
 
-import java.io.Closeable;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
  * Reads input line by line and skips empty lines. The number of empty lines can
  * be obtained. A line can also be pushed back.
  * 
+ * The iterator can only run once.
+ * 
  * @author joschi
  * 
  */
-public class ContentReader implements Closeable {
+public class ContentReader implements Iterable<String>, Iterator<String> {
 
 	/** The input. */
-	private final Scanner in;
+	private Scanner in;
 
 	/** The last line. */
 	private String last;
@@ -43,6 +45,9 @@ public class ContentReader implements Closeable {
 	 * <code>false</code>.
 	 */
 	private void fetchNext() {
+		if (in == null) {
+			return;
+		}
 		// assert !pushedBack
 		int space = 0;
 		String line = "";
@@ -55,6 +60,10 @@ public class ContentReader implements Closeable {
 		}
 		lastSpace = space;
 		last = line.isEmpty() ? null : line;
+		if (!in.hasNextLine()) {
+			in.close();
+			in = null;
+		}
 	}
 
 	/**
@@ -62,6 +71,7 @@ public class ContentReader implements Closeable {
 	 *         after a call to this method {@link #emptyLines()} already returns
 	 *         the new value.
 	 */
+	@Override
 	public boolean hasNext() {
 		if (!pushedBack) {
 			fetchNext();
@@ -73,7 +83,8 @@ public class ContentReader implements Closeable {
 	/**
 	 * @return Returns the next non-empty line of input.
 	 */
-	public String getNext() {
+	@Override
+	public String next() {
 		if (pushedBack) {
 			pushedBack = false;
 			return last;
@@ -84,7 +95,7 @@ public class ContentReader implements Closeable {
 
 	/**
 	 * @return Returns the number of empty lines skipped by the last call of
-	 *         {@link #getNext()}.
+	 *         {@link #next()}.
 	 */
 	public int emptyLines() {
 		return lastSpace;
@@ -99,13 +110,20 @@ public class ContentReader implements Closeable {
 	}
 
 	@Override
-	public void close() {
-		in.close();
+	public Iterator<String> iterator() {
+		return this;
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException("remove is not allowed");
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		close();
+		if (in != null) {
+			in.close();
+		}
 		super.finalize();
 	}
 
