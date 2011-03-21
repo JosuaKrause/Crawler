@@ -6,6 +6,7 @@ import java.net.CookiePolicy;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
 
 import de.visone.crawl.accept.LinkAccepter;
 import de.visone.crawl.accept.MaxDepth;
@@ -36,6 +37,13 @@ public class Crawler {
 	 * The thread crawling the net.
 	 */
 	private final CrawlerThread thread;
+
+	public Crawler(final Settings set, final CrawlListener listener,
+			final Object... urls) {
+		this(set, urls.length > 0 ? urls[0].toString() : null, listener,
+				urls.length > 1 ? Arrays.copyOfRange(urls, 1, urls.length)
+						: new Object[0]);
+	}
 
 	/**
 	 * Sets up the crawler and starts it. The progress can be obtained via
@@ -117,4 +125,19 @@ public class Crawler {
 		}
 	}
 
+	public void join() throws InterruptedException {
+		if (thread.isAlive()) {
+			synchronized (thread) {
+				thread.join();
+			}
+		}
+	}
+
+	public void join(final long millis) throws InterruptedException {
+		if (thread.isAlive()) {
+			synchronized (thread) {
+				thread.join(millis);
+			}
+		}
+	}
 }

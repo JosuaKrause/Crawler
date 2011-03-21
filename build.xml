@@ -75,5 +75,15 @@
             <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
-	<target name="all" depends="crawl" />
+    <target name="api">
+        <jar destfile="./crawler_api.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="./bin">
+            </fileset>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
+        </jar>
+    </target>
+	<target name="all" depends="crawl,api" />
 </project>
