@@ -48,6 +48,7 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 		lastSpace = 0;
 		pushedBack = false;
 		fetchNext();
+		pushBack();
 	}
 
 	/**
@@ -56,6 +57,7 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 	 */
 	private void fetchNext() {
 		if (in == null) {
+			last = null;
 			return;
 		}
 		// assert !pushedBack
