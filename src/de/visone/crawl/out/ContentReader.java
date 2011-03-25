@@ -1,7 +1,9 @@
 package de.visone.crawl.out;
 
-import java.util.Iterator;
+import java.io.IOException;
 import java.util.Scanner;
+
+import de.visone.crawl.sys.PushbackReader;
 
 /**
  * Reads input line by line and skips empty lines. The number of empty lines can
@@ -9,22 +11,16 @@ import java.util.Scanner;
  * 
  * The iterator can only run once.
  * 
- * @author joschi
+ * @author Joschi
  * 
  */
-public class ContentReader implements Iterable<String>, Iterator<String> {
+public class ContentReader extends PushbackReader<String> {
 
 	/** The input. */
 	private Scanner in;
 
-	/** The last line. */
-	private String last;
-
 	/** The last number of empty lines. */
 	private int lastSpace;
-
-	/** Whether the input is pushed back. */
-	private boolean pushedBack;
 
 	/**
 	 * Creates a content reader from a String.
@@ -44,23 +40,14 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 	 */
 	public ContentReader(final Scanner scanner) {
 		in = scanner;
-		last = null;
 		lastSpace = 0;
-		pushedBack = false;
-		fetchNext();
-		pushBack();
 	}
 
-	/**
-	 * Fetches the next line under the assumption that {@link #pushedBack} is
-	 * <code>false</code>.
-	 */
-	private void fetchNext() {
+	@Override
+	protected String fetchNext() {
 		if (in == null) {
-			last = null;
-			return;
+			return null;
 		}
-		// assert !pushedBack
 		int space = 0;
 		String line = "";
 		while (in.hasNextLine()) {
@@ -71,38 +58,10 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 			++space;
 		}
 		lastSpace = space;
-		last = line.isEmpty() ? null : line;
 		if (!in.hasNextLine()) {
-			in.close();
-			in = null;
+			smoothClose();
 		}
-	}
-
-	/**
-	 * @return Whether there are any more non-empty lines of input. Note that
-	 *         after a call to this method {@link #emptyLines()} already returns
-	 *         the new value.
-	 */
-	@Override
-	public boolean hasNext() {
-		if (!pushedBack) {
-			fetchNext();
-			pushBack();
-		}
-		return last != null;
-	}
-
-	/**
-	 * @return Returns the next non-empty line of input.
-	 */
-	@Override
-	public String next() {
-		if (pushedBack) {
-			pushedBack = false;
-			return last;
-		}
-		fetchNext();
-		return last;
+		return line.isEmpty() ? null : line;
 	}
 
 	/**
@@ -113,31 +72,17 @@ public class ContentReader implements Iterable<String>, Iterator<String> {
 		return lastSpace;
 	}
 
-	/**
-	 * Pushes the last line back on the input. The number of skipped lines
-	 * remains the same.
-	 */
-	public void pushBack() {
-		pushedBack = true;
-	}
-
-	@Override
-	public Iterator<String> iterator() {
-		return this;
-	}
-
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("remove is not allowed");
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
+	private void smoothClose() {
 		if (in != null) {
 			in.close();
 			in = null;
 		}
-		super.finalize();
+	}
+
+	@Override
+	public void close() throws IOException {
+		smoothClose();
+		super.close();
 	}
 
 }

@@ -17,7 +17,7 @@ public abstract class XmlWriter implements CrawlListener {
 	public XmlWriter(final OutputStream out, final String root)
 			throws IOException {
 		try {
-			xml = XMLOutputFactory.newFactory().createXMLStreamWriter(out,
+			xml = XMLOutputFactory.newInstance().createXMLStreamWriter(out,
 					Utils.UTF8);
 			xml.writeStartDocument();
 			xml.writeStartElement(root);
