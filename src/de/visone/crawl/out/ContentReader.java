@@ -1,20 +1,20 @@
 package de.visone.crawl.out;
 
-import java.io.IOException;
 import java.util.Scanner;
 
-import de.visone.crawl.sys.PushbackReader;
+import de.visone.crawl.sys.PushbackIterator;
 
 /**
  * Reads input line by line and skips empty lines. The number of empty lines can
  * be obtained. A line can also be pushed back.
  * 
- * The iterator can only run once.
+ * The iterator can only run once. More information on how this iterator works
+ * see {@link PushbackIterator}.
  * 
  * @author Joschi
  * 
  */
-public class ContentReader extends PushbackReader<String> {
+public class ContentReader extends PushbackIterator<String> {
 
 	/** The input. */
 	private Scanner in;
@@ -58,31 +58,25 @@ public class ContentReader extends PushbackReader<String> {
 			++space;
 		}
 		lastSpace = space;
-		if (!in.hasNextLine()) {
-			smoothClose();
-		}
 		return line.isEmpty() ? null : line;
 	}
 
 	/**
 	 * @return Returns the number of empty lines skipped by the last call of
-	 *         {@link #next()}.
+	 *         {@link #next()}. Note that after a call of {@link #hasNext()}
+	 *         this method already returns the next value and that the result
+	 *         {@link #pushBack()} has no effect on this result either.
 	 */
 	public int emptyLines() {
 		return lastSpace;
 	}
 
-	private void smoothClose() {
+	@Override
+	protected void closeInput() {
 		if (in != null) {
 			in.close();
 			in = null;
 		}
-	}
-
-	@Override
-	public void close() throws IOException {
-		smoothClose();
-		super.close();
 	}
 
 }

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JDialog;
 
 import de.visone.crawl.gui.editor.RuleEditorDialog;
@@ -37,7 +39,7 @@ public class RuleEditorAction extends AbstractAction {
 	}
 
 	public RuleEditorAction(final URL url, final String rule, final boolean skip) {
-		this(url, rule, skip, null);
+		this(url, rule, skip, (JDialog) null);
 	}
 
 	public RuleEditorAction(final URL url, final String rule,
@@ -54,7 +56,7 @@ public class RuleEditorAction extends AbstractAction {
 
 	public RuleEditorAction(final String url, final String rule,
 			final boolean skip) {
-		this(url, rule, skip, null);
+		this(url, rule, skip, (JDialog) null);
 	}
 
 	public RuleEditorAction(final String url, final String rule,
@@ -63,6 +65,97 @@ public class RuleEditorAction extends AbstractAction {
 		this.rule = rule;
 		this.skip = skip;
 		this.par = par;
+	}
+
+	public RuleEditorAction(final String name) {
+		this();
+		setName(name);
+	}
+
+	public RuleEditorAction(final URL url, final String rule, final String name) {
+		this(url, rule);
+		setName(name);
+	}
+
+	public RuleEditorAction(final URL url, final String rule,
+			final boolean skip, final String name) {
+		this(url, rule, skip);
+		setName(name);
+	}
+
+	public RuleEditorAction(final URL url, final String rule,
+			final boolean skip, final JDialog par, final String name) {
+		this(url, rule, skip, par);
+		setName(name);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final String name) {
+		this(url, rule);
+		setName(name);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final boolean skip, final String name) {
+		this(url, rule, skip);
+		setName(name);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final boolean skip, final JDialog par, final String name) {
+		this(url, rule, skip, par);
+		setName(name);
+	}
+
+	public RuleEditorAction(final String name, final Icon icon) {
+		this(name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final URL url, final String rule,
+			final String name, final Icon icon) {
+		this(url, rule, name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final URL url, final String rule,
+			final boolean skip, final String name, final Icon icon) {
+		this(url, rule, skip, name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final URL url, final String rule,
+			final boolean skip, final JDialog par, final String name,
+			final Icon icon) {
+		this(url, rule, skip, par, name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final String name, final Icon icon) {
+		this(url, rule, name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final boolean skip, final String name, final Icon icon) {
+		this(url, rule, skip, name);
+		setIcon(icon);
+	}
+
+	public RuleEditorAction(final String url, final String rule,
+			final boolean skip, final JDialog par, final String name,
+			final Icon icon) {
+		this(url, rule, skip, par, name);
+		setIcon(icon);
+	}
+
+	public void setName(final String name) {
+		putValue(Action.NAME, name);
+	}
+
+	public void setIcon(final Icon icon) {
+		putValue(Action.SMALL_ICON, icon);
 	}
 
 	@Override
