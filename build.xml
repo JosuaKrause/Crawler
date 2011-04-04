@@ -85,5 +85,17 @@
             <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
         </jar>
     </target>
-	<target name="all" depends="crawl,api" />
+	<target name="rules">
+        <jar destfile="./ruleeditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="de.visone.crawl.RuleMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="./bin">
+                <exclude name="de/visone/crawl/google/**"/>
+            </fileset>
+            <zipfileset excludes="META-INF/*.MF" src="./tagsoup-1.2.jar"/>
+        </jar>
+    </target>
+	<target name="all" depends="crawl,api,rules" />
 </project>
