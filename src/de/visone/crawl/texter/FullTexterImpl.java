@@ -11,6 +11,16 @@ import de.visone.crawl.rules.HtmlQuery;
 
 public class FullTexterImpl extends NoTextTexterImpl {
 
+	private static String DELIMITER = " ";
+
+	public static void setDelimiter(final String delimiter) {
+		DELIMITER = delimiter;
+	}
+
+	public static String getDelimiter() {
+		return DELIMITER;
+	}
+
 	private final StringBuilder sb;
 
 	private final HtmlQuery text;
@@ -109,7 +119,7 @@ public class FullTexterImpl extends NoTextTexterImpl {
 			return;
 		}
 		if (needSpace) {
-			sb.append(' ');
+			sb.append(DELIMITER);
 		} else {
 			needSpace = true;
 		}
