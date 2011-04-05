@@ -55,7 +55,12 @@ public class RuleManager {
 			file = new File(BASE, rule);
 			rule = rule.substring(rule.indexOf('.') + 1);
 		} while (!file.exists() && rule.length() > EXT.length());
-		return file.exists() ? file.getName() : null;
+		return file.exists() ? file.getName() : maybeDefaultRule();
+	}
+
+	private static String maybeDefaultRule() {
+		final File defaultRule = new File(BASE, EXT);
+		return defaultRule.exists() ? defaultRule.getName() : null;
 	}
 
 	public static String[] getRules() {
