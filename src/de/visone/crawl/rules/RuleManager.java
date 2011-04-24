@@ -37,7 +37,7 @@ public class RuleManager {
 		final String[] seg = path.split("/");
 		final StringBuilder sb = new StringBuilder();
 		int i = seg.length;
-		while (i-- > 0) {
+		while (--i >= 0) {
 			if (seg[i].isEmpty()) {
 				continue;
 			}

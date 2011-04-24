@@ -34,7 +34,7 @@ public class ImageRepresentation {
 		imgs = list.toArray(new Img[list.size()]);
 		int i = imgs.length;
 		states = new int[i];
-		while (i-- > 0) {
+		while (--i >= 0) {
 			states[i] = NORMAL;
 		}
 	}

@@ -34,7 +34,7 @@ public class RuleMain {
 		if ((i & 1) != 0) {
 			usage();
 		}
-		while (i-- > 0) {
+		while (--i >= 0) {
 			cur = args[i--].trim();
 			final String flag = args[i].trim();
 			if (flag.equals("-b")) {

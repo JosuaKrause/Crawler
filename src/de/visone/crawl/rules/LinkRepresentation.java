@@ -34,7 +34,7 @@ public class LinkRepresentation {
 		links = list.toArray(new Link[list.size()]);
 		int i = links.length;
 		states = new int[i];
-		while (i-- > 0) {
+		while (--i >= 0) {
 			states[i] = NORMAL;
 		}
 	}

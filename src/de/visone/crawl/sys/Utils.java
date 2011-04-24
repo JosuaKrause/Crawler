@@ -80,7 +80,7 @@ public class Utils {
 	public static URL[] getURLs(final String[] urls) {
 		int i = urls.length;
 		final URL[] res = new URL[i];
-		while (i-- > 0) {
+		while (--i >= 0) {
 			res[i] = getURL(urls[i]);
 		}
 		return res;

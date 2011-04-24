@@ -113,8 +113,8 @@ public class CrawlWorker extends XmlWriter {
 			if (dest.exists()) {
 				continue;
 			}
-			final BufferedImage img = ImageIO.read(Utils.createInputStream(
-					i.getSource(), set.userAgent));
+			final BufferedImage img = ImageIO.read(Utils.createInputStream(i
+					.getSource(), set.userAgent));
 			ImageIO.write(img, FORMAT, dest);
 			img.flush();
 		}
@@ -292,17 +292,17 @@ public class CrawlWorker extends XmlWriter {
 
 		// first eliminate common root
 		while ((i >= 0) && (j >= 0) && (r.get(i).equals(f.get(j)))) {
-			i--;
-			j--;
+			--i;
+			--j;
 		}
 
 		// for each remaining level in the home path, add a ..
-		for (; i >= 0; i--) {
+		for (; i >= 0; --i) {
 			s += ".." + File.separator;
 		}
 
 		// for each level in the file path, add the path
-		for (; j >= 1; j--) {
+		for (; j >= 1; --j) {
 			s += f.get(j) + File.separator;
 		}
 

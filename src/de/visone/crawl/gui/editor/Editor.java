@@ -100,7 +100,7 @@ public abstract class Editor extends JPanel {
 	protected void deleteSelection() {
 		final int r[] = getTable().getSelectedRows();
 		int i = r.length;
-		while (i-- > 0) {
+		while (--i >= 0) {
 			tableModel.setValueAt("", r[i], 0);
 		}
 	}
