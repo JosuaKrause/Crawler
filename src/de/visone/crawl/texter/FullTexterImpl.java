@@ -69,7 +69,9 @@ public class FullTexterImpl extends NoTextTexterImpl {
                 if (iat.satisfies(a)) {
                     final String content = iat.getContent(a);
                     if (content != null) {
+                        sb.append(DELIMITER);
                         string(content);
+                        sb.append(DELIMITER);
                     }
                 }
             }
